@@ -72,68 +72,85 @@ public class CustomerDAO {
         return -1; // Return -1 if customer not found
     }
     
+
     
 
-        public static List<CustomerBean> getAllCustomers() {
+     // Fetch all customers from the database
+        public List<CustomerBean> getAllCustomers() {
             List<CustomerBean> customers = new ArrayList<>();
-            Connection conn = DBConnection.getConnection();
+            String query = "SELECT * FROM customers";
 
-            String query = "SELECT * FROM customers"; // Adjust this to your actual table and column names
             try (PreparedStatement stmt = conn.prepareStatement(query);
                  ResultSet rs = stmt.executeQuery()) {
 
                 while (rs.next()) {
                     CustomerBean customer = new CustomerBean();
-                    customer.setCustomerId(rs.getInt("id"));
-                    customer.setFullName(rs.getString("name"));
+                    customer.setCustomerId(rs.getInt("customer_id"));
+                    customer.setFullName(rs.getString("full_name"));
                     customer.setEmail(rs.getString("email"));
                     customer.setPhoneNumber(rs.getString("phone"));
                     customer.setAddress(rs.getString("address"));
+                    customer.setNicNumber(rs.getString("nic"));
                     customer.setStatus(rs.getString("status"));
                     customers.add(customer);
                 }
             } catch (SQLException e) {
+                System.err.println("SQL Error in getAllCustomers: " + e.getMessage());
                 e.printStackTrace();
             }
+
             return customers;
         }
-    
 
+        // Search customers by name, email, or phone
+        public List<CustomerBean> searchCustomers(String query) {
+            List<CustomerBean> customers = new ArrayList<>();
+            String sql = "SELECT * FROM customers WHERE full_name LIKE ? OR email LIKE ? OR phone LIKE ?";
 
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, "%" + query + "%");
+                stmt.setString(2, "%" + query + "%");
+                stmt.setString(3, "%" + query + "%");
 
-    public List<CustomerBean> searchCustomers(String searchTerm) {
-        List<CustomerBean> customers = new ArrayList<>();
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SEARCH_CUSTOMERS)) {
+                ResultSet rs = stmt.executeQuery();
 
-            stmt.setString(1, "%" + searchTerm + "%");
-            stmt.setString(2, "%" + searchTerm + "%");
-
-            try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     CustomerBean customer = new CustomerBean();
-                    customer.setCustomerId(rs.getInt("customerId"));
-                    customer.setFullName(rs.getString("fullName"));
+                    customer.setCustomerId(rs.getInt("customer_id"));
+                    customer.setFullName(rs.getString("full_name"));
                     customer.setEmail(rs.getString("email"));
-                    customer.setPhoneNumber(rs.getString("phoneNumber"));
+                    customer.setPhoneNumber(rs.getString("phone"));
                     customer.setAddress(rs.getString("address"));
+                    customer.setNicNumber(rs.getString("nic"));
                     customer.setStatus(rs.getString("status"));
                     customers.add(customer);
                 }
+            } catch (SQLException e) {
+                System.err.println("SQL Error in searchCustomers: " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return customers;
-    }
-    
 
-    public void deleteCustomer(int customerId) throws SQLException {
-        String sql = "DELETE FROM customers WHERE id = ?";
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, customerId);
-        stmt.executeUpdate();
-    }
+            return customers;
+        }
+
+        // Delete a customer by ID
+        public boolean deleteCustomer(int customerId) {
+            String query = "DELETE FROM customers WHERE customer_id = ?";
+
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, customerId);
+                int rowsAffected = stmt.executeUpdate();
+                return rowsAffected > 0; // Return true if deletion is successful
+            } catch (SQLException e) {
+                System.err.println("SQL Error in deleteCustomer: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            return false; // Return false if deletion fails
+        }
+        
+        
+
     
     
     public void toggleCustomerStatus(int customerId) throws SQLException {

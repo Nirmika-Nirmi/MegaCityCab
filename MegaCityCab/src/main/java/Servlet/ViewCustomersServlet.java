@@ -1,64 +1,70 @@
 package Servlet;
 
 import Dao.CustomerDAO;
-import Dao.DBConnection;
 import Bean.CustomerBean;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/viewCustomers")
+@WebServlet("/ViewCustomersServlet")
 public class ViewCustomersServlet extends HttpServlet {
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Fetch the list of customers from the database using the DAO
-        List<CustomerBean> customers = CustomerDAO.getAllCustomers();
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the action parameter from the request
+        String action = request.getParameter("action");
+
+        // Handle delete action
+        if ("delete".equals(action)) {
+            deleteCustomer(request, response);
+        } else {
+            // Default action: display customers
+            displayCustomers(request, response);
+        }
+    }
+
+    // Method to display customers
+    private void displayCustomers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Fetch the list of customers from the database
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<CustomerBean> customers;
+
+        // Check if a search query is provided
+        String searchQuery = request.getParameter("search");
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            // Perform search
+            customers = customerDAO.searchCustomers(searchQuery);
+        } else {
+            // Fetch all customers
+            customers = customerDAO.getAllCustomers();
+        }
 
         // Set the list of customers as a request attribute
         request.setAttribute("customers", customers);
 
-        // Forward the request to the viewCustomers.jsp page to display the data
+        // Forward the request to the viewCustomers.jsp page
         request.getRequestDispatcher("viewCustomers.jsp").forward(request, response);
-
-        // Optionally, print the customer list size for debugging
-        System.out.println("Fetched customers: " + customers.size());
     }
 
-    // This is where you fetch customers from the database
-    private List<CustomerBean> getAllCustomers() {
-        List<CustomerBean> customers = new ArrayList<>();
-        String query = "SELECT * FROM customers";  // Your SQL query to fetch customers
+    // Method to delete a customer
+    private void deleteCustomer(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Get the customer ID from the request
+        int customerId = Integer.parseInt(request.getParameter("customerId"));
 
-        try (Connection conn = DBConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+        // Delete the customer from the database
+        CustomerDAO customerDAO = new CustomerDAO();
+        boolean isDeleted = customerDAO.deleteCustomer(customerId);
 
-            while (rs.next()) {
-                CustomerBean customer = new CustomerBean();
-                customer.setCustomerId(rs.getInt("customerId"));
-                customer.setFullName(rs.getString("name"));
-                customer.setEmail(rs.getString("email"));
-                customer.setPhoneNumber(rs.getString("phone"));
-                customer.setAddress(rs.getString("address"));
-                customer.setStatus(rs.getString("status"));
-                customers.add(customer);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Redirect to the ViewCustomersServlet after deletion
+        if (isDeleted) {
+            response.sendRedirect("ViewCustomersServlet");
+        } else {
+            request.setAttribute("errorMessage", "Failed to delete customer.");
+            request.getRequestDispatcher("viewCustomers.jsp").forward(request, response);
         }
-
-        return customers;  // Return the list of customers
     }
 }
-
-

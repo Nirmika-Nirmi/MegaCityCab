@@ -1,73 +1,159 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, Bean.Booking, Dao.BookingDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Bean.CustomerBean" %>
+<%@ page import="Dao.CustomerDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>View Customers</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .booking-item { border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
-        .status-pending { color: #ffc107; }
-        .status-confirmed { color: #28a745; }
-        .status-completed { color: #007bff; }
-        .status-cancelled { color: #dc3545; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-form input[type="text"] {
+            padding: 8px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .search-form button {
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>My Bookings</h1>
-        </div>
+    <h1>Customer List</h1>
 
-        <!-- Bookings List -->
-        <div class="bookings-list">
+    <!-- Search Form -->
+    <form action="ViewCustomersServlet" method="get" class="search-form">
+        <input type="text" name="search" placeholder="Search by name, email, or phone..." value="<%= request.getParameter("search") != null ? request.getParameter("search") : "" %>">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Fetch the list of customers from the database -->
+    <%
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<CustomerBean> customers;
+
+        // Check if a search query is provided
+        String searchQuery = request.getParameter("search");
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            // Perform search
+            customers = customerDAO.searchCustomers(searchQuery);
+        } else {
+            // Fetch all customers
+            customers = customerDAO.getAllCustomers();
+        }
+    %>
+
+    <!-- Display the list of customers in a table -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>NIC</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
             <%
-                // Retrieve customer ID from session
-                Integer customerId = (Integer) session.getAttribute("customerId");
-                if (customerId == null) {
-                    out.println("<p>Customer ID not found in session. Please <a href='customerLogin.jsp'>log in again</a>.</p>");
-                } else {
-                    // Fetch bookings for the customer
-                    BookingDAO bookingDAO = new BookingDAO();
-                    List<Booking> bookings = bookingDAO.getBookingsByCustomerId(customerId);
-
-                    if (bookings.isEmpty()) {
-                        out.println("<p>No bookings found.</p>");
-                    } else {
-                        for (Booking booking : bookings) {
+                if (customers != null && !customers.isEmpty()) {
+                    for (CustomerBean customer : customers) {
             %>
-                            <div class="booking-item">
-                                <p><strong>Booking ID:</strong> <%= booking.getBookingId() %></p>
-                                <p><strong>Pickup Location:</strong> <%= booking.getPickupLocation() %></p>
-                                <p><strong>Drop Location:</strong> <%= booking.getDropLocation() %></p>
-                                <p><strong>Status:</strong> 
-                                    <span class="status-<%= booking.getStatus().toLowerCase() %>">
-                                        <%= booking.getStatus() %>
-                                    </span>
-                                </p>
-                                <p><strong>Fare:</strong> $<%= booking.getFare() %></p>
-                                <p><strong>Passengers:</strong> <%= booking.getNumPassengers() %></p>
-                                <p><strong>Date:</strong> <%= booking.getBookingDate() %></p>
-                            </div>
+                <tr>
+                    <td><%= customer.getCustomerId() %></td>
+                    <td><%= customer.getFullName() %></td>
+                    <td><%= customer.getEmail() %></td>
+                    <td><%= customer.getPhoneNumber() %></td>
+                    <td><%= customer.getAddress() %></td>
+                    <td><%= customer.getNicNumber() %></td>
+                    <td><%= customer.getStatus() %></td>
+                    <td>
+                        <a href="ViewCustomersServlet?action=delete&customerId=<%= customer.getCustomerId() %>" class="btn delete-btn">Delete</a>
+                    </td>
+                </tr>
             <%
-                        }
                     }
+                } else {
+            %>
+                <tr>
+                    <td colspan="8" class="no-data">No customers found.</td>
+                </tr>
+            <%
                 }
             %>
-        </div>
-
-        <!-- Back to Dashboard -->
-        <div class="text-center mt-4">
-            <a href="customerDashboard.jsp" class="btn btn-primary">Back to Dashboard</a>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </tbody>
+    </table>
 </body>
 </html>
