@@ -19,7 +19,7 @@ public class CalculateBillServlet extends HttpServlet {
             int bookingId = Integer.parseInt(request.getParameter("bookingId"));
             double startKm = Double.parseDouble(request.getParameter("startingMeter"));
             double endKm = Double.parseDouble(request.getParameter("endingMeter"));
-            String paymentMethod = request.getParameter("paymentMethod"); // Payment method (Cash, Card, UPI, etc.)
+            
 
             // Fetch ride details
             BookingDAO bookingDAO = new BookingDAO();
@@ -27,7 +27,7 @@ public class CalculateBillServlet extends HttpServlet {
             String customerPhone = bookingDAO.getCustomerPhoneByBookingId(bookingId);
             String pickupLocation = request.getParameter("pickupLocation");
             String dropLocation = request.getParameter("dropLocation");
-
+            String paymentMethod = request.getParameter("paymentMethod");
             // Calculate fare
             double perKmRate = 2.50; // Default rate per km
             double distance = endKm - startKm;
@@ -41,11 +41,12 @@ public class CalculateBillServlet extends HttpServlet {
             request.setAttribute("customerPhone", customerPhone);
             request.setAttribute("pickupLocation", pickupLocation);
             request.setAttribute("dropLocation", dropLocation);
+            request.setAttribute("paymentMethod", paymentMethod);
             request.setAttribute("distance", distance);
             request.setAttribute("startingMeter", startKm);
             request.setAttribute("endingMeter", endKm);
             request.setAttribute("finalAmount", finalAmount);
-            request.setAttribute("paymentMethod", paymentMethod);
+
 
             // Forward to the payment confirmation page
             request.getRequestDispatcher("paymentConfirmation.jsp").forward(request, response);

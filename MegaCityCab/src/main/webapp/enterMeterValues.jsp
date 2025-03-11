@@ -18,14 +18,20 @@
             if (bookingIdParam == null || bookingIdParam.isEmpty()) {
                 out.println("<p class='alert alert-danger'>Booking ID not found. Please go back and try again.</p>");
             } else {
-                int bookingId = Integer.parseInt(bookingIdParam);
+                int bookingId = 0;
+                try {
+                    bookingId = Integer.parseInt(bookingIdParam);
+                } catch (NumberFormatException e) {
+                    out.println("<p class='alert alert-danger'>Invalid Booking ID. Please go back and try again.</p>");
+                    return; // Stop further execution
+                }
 
                 // Fetch ride details using the bookingId
                 BookingDAO bookingDAO = new BookingDAO();
                 Booking booking = bookingDAO.getBookingById(bookingId);
 
                 if (booking == null) {
-                    out.println("<p class='alert alert-danger'>Invalid booking ID. Please go back and try again.</p>");
+                    out.println("<p class='alert alert-danger'>No booking found for the provided ID. Please go back and try again.</p>");
                 } else {
                     // Fetch additional details for the booking
                     String customerName = bookingDAO.getCustomerNameByBookingId(bookingId);
@@ -61,7 +67,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Payment Method:</label>
-                            <input type="text" class="form-control" value="<%= paymentMethod %>" readonly />
+                            <input type="text" class="form-control" value="<%= paymentMethod != null ? paymentMethod : "Not Specified" %>" readonly />
                         </div>
 
                         <!-- Input fields for meter values -->

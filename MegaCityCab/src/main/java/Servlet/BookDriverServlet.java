@@ -19,6 +19,7 @@ public class BookDriverServlet extends HttpServlet {
         String pickupLocation = request.getParameter("pickupLocation");
         String dropLocation = request.getParameter("dropLocation");
         int numPassengers = Integer.parseInt(request.getParameter("numPassengers"));
+        String paymentMethod = request.getParameter("paymentMethod"); // Retrieve payment method
 
         // Create Booking object
         Booking booking = new Booking();
@@ -27,6 +28,7 @@ public class BookDriverServlet extends HttpServlet {
         booking.setPickupLocation(pickupLocation);
         booking.setDropLocation(dropLocation);
         booking.setNumPassengers(numPassengers);
+        booking.setPaymentMethod(paymentMethod); // Set payment method
         booking.setStatus("Pending"); // Booking is initially pending
 
         // Save booking to database

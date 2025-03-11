@@ -24,7 +24,6 @@ public class ConfirmPaymentServlet extends HttpServlet {
             billing.setBookingId(bookingId);
             billing.setBillNumber("BILL-" + System.currentTimeMillis()); // Unique bill number
             billing.setFinalAmount(finalAmount);
-            billing.setPaymentMethod(paymentMethod);
             billing.setPaymentStatus("Paid"); // Update payment status to "Paid"
 
             // Generate bill

@@ -135,6 +135,28 @@ public class BookingDAO {
         }
     }
 
+    public List<Booking> getAssignedRides(int driverId) {
+        List<Booking> rides = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE driver_id = ? AND status IN ('Pending', 'Confirmed')";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, driverId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setPickupLocation(rs.getString("pickup_location"));
+                booking.setDropLocation(rs.getString("drop_location"));
+                booking.setStatus(rs.getString("status"));
+                booking.setPaymentMethod(rs.getString("payment_method")); // Retrieve payment method
+                booking.setNumPassengers(rs.getInt("num_passengers"));
+                rides.add(booking);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getAssignedRides: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return rides;
+    }
     // Method to get bookings by customer ID
     public List<Booking> getBookingsByCustomerId(int customerId) {
         List<Booking> bookings = new ArrayList<>();
@@ -159,30 +181,29 @@ public class BookingDAO {
         return bookings;
     }
 
-    // Method to get assigned rides for a driver
-    public List<Booking> getAssignedRides(int driverId) {
-        List<Booking> rides = new ArrayList<>();
-        String query = "SELECT * FROM bookings WHERE driver_id = ? AND status IN ('Pending', 'Confirmed')";
+
+
+    // Method to get booking by ID
+    public Booking getBookingById(int bookingId) {
+        String query = "SELECT * FROM bookings WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, driverId);
+            stmt.setInt(1, bookingId);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 Booking booking = new Booking();
                 booking.setBookingId(rs.getInt("booking_id"));
                 booking.setPickupLocation(rs.getString("pickup_location"));
                 booking.setDropLocation(rs.getString("drop_location"));
                 booking.setStatus(rs.getString("status"));
                 booking.setFare(rs.getDouble("fare"));
-                rides.add(booking);
+                booking.setNumPassengers(rs.getInt("num_passengers"));
+                return booking;
             }
         } catch (SQLException e) {
-            System.err.println("SQL Error in getAssignedRides: " + e.getMessage());
             e.printStackTrace();
         }
-        return rides;
+        return null; // Return null if no booking is found
     }
-
-  
 
     // Method to mark a ride as completed
     public boolean completeRide(int bookingId) {
@@ -397,35 +418,21 @@ public class BookingDAO {
         return null; // Return null if no booking date is found
     }
 
-    
-    public Booking getBookingById(int bookingId) {
-        String query = "SELECT * FROM bookings WHERE booking_id = ?";
+ // Method to get payment method by booking ID
+    public String getPaymentMethodByBookingId(int bookingId) {
+        String query = "SELECT payment_method FROM bookings WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, bookingId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Booking booking = new Booking();
-                booking.setBookingId(rs.getInt("booking_id"));
-                booking.setCustomerId(rs.getInt("customer_id"));
-                booking.setDriverId(rs.getInt("driver_id"));
-                booking.setCarId(rs.getInt("car_id"));
-                booking.setPickupLocation(rs.getString("pickup_location"));
-                booking.setDropLocation(rs.getString("drop_location"));
-                booking.setBookingDate(rs.getTimestamp("booking_date"));
-                booking.setStatus(rs.getString("status"));
-                booking.setDistance(rs.getDouble("distance"));
-                booking.setFare(rs.getDouble("fare"));
-                booking.setNumPassengers(rs.getInt("num_passengers"));
-                booking.setPaymentMethod(rs.getString("payment_method")); // Fetch payment method
-                booking.setSpecialRequests(rs.getString("special_requests"));
-                booking.setCancellationReason(rs.getString("cancellation_reason"));
-                return booking;
+                return rs.getString("payment_method");
             }
         } catch (SQLException e) {
-            System.err.println("SQL Error in getBookingById: " + e.getMessage());
             e.printStackTrace();
         }
-        return null; // Return null if no booking is found
+        return null; // Return null if no payment method is found
     }
+    
+    
 
 }
