@@ -1,5 +1,6 @@
 package Dao;
 
+import Bean.Billing;
 import Bean.Booking;
 import Bean.Car;
 import Bean.Driver;
@@ -68,6 +69,47 @@ public class DriverDAO {
             e.printStackTrace();
         }
         return -1; // Return -1 if driver not found
+    }
+    
+    public List<Billing> getEarningsHistory(int driverId) {
+        List<Billing> earnings = new ArrayList<>();
+        String query = "SELECT b.* FROM billing b JOIN bookings bk ON b.booking_id = bk.booking_id WHERE bk.driver_id = ?";
+        
+        // Initialize the connection
+        try (Connection connection = DBConnection.getConnection(); // Ensure DBConnection.getConnection() is implemented
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            
+            // Set the driverId parameter
+            stmt.setInt(1, driverId);
+            
+            // Execute the query
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    // Create a Billing object and populate it with data from the ResultSet
+                    Billing billing = new Billing();
+                    billing.setBillId(rs.getInt("bill_id"));
+                    billing.setBookingId(rs.getInt("booking_id"));
+                    billing.setBillNumber(rs.getString("bill_number"));
+                    billing.setFinalAmount(rs.getDouble("final_amount"));
+                    billing.setPaymentMethod(rs.getString("payment_method"));
+                    billing.setPaymentStatus(rs.getString("payment_status"));
+                    billing.setBillDate(rs.getTimestamp("bill_date"));
+                    
+                    // Add the billing object to the list
+                    earnings.add(billing);
+                }
+            }
+        } catch (SQLException e) {
+            // Log the error properly
+            System.err.println("SQL Error in getEarningsHistory: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            // Handle other exceptions
+            System.err.println("Error in getEarningsHistory: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return earnings;
     }
 
     public static Driver getDriverById(int driverId) {

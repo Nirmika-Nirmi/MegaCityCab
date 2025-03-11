@@ -97,8 +97,8 @@
                 <input type="text" class="form-control" id="dropLocation" name="dropLocation" required>
             </div>
             <div class="mb-3">
-                <label for="pickupTime" class="form-label">Pickup Time</label>
-                <input type="datetime-local" class="form-control" id="pickupTime" name="pickupTime" required>
+                 <label for="pickupTime" class="form-label">Pickup Date and Time</label>
+                 <input type="datetime-local" class="form-control" id="pickupTime" name="pickupTime" required>
             </div>
             <div class="mb-3">
                 <label for="numPassengers" class="form-label">Number of Passengers</label>
@@ -110,8 +110,7 @@
                     <option value="">Select Payment Method</option>
                     <option value="Cash">Cash</option>
                     <option value="Card">Card</option>
-                    <option value="UPI">UPI</option>
-                    <option value="Wallet">Wallet</option>
+
                 </select>
             </div>
             <div class="mb-3">

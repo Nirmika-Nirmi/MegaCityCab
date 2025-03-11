@@ -10,6 +10,15 @@ import java.io.IOException;
 
 @WebServlet("/RideActionServlet")
 public class RideActionServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Handle GET requests (e.g., from links)
+        doPost(request, response); // Delegate to doPost
+    }
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int bookingId = Integer.parseInt(request.getParameter("bookingId"));
         String action = request.getParameter("action"); // "accept", "reject", or "complete"
@@ -26,12 +35,12 @@ public class RideActionServlet extends HttpServlet {
                 break;
             case "complete":
                 // Redirect to calculate fare page
-                response.sendRedirect("calculateFare.jsp?bookingId=" + bookingId);
+                response.sendRedirect("enterMeterValues.jsp?bookingId=" + bookingId);
                 return;
         }
 
         if (success) {
-            response.sendRedirect("driverDashboard.jsp");
+            response.sendRedirect("driver-dashboard.jsp");
         } else {
             response.sendRedirect("error.jsp?message=Failed to process ride action");
         }

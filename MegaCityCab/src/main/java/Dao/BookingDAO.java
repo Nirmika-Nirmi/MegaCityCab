@@ -1,5 +1,6 @@
 package Dao;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,12 +101,12 @@ public class BookingDAO {
     // Method to save a new booking
     public boolean saveBooking(Booking booking) {
         String query = "INSERT INTO bookings (customer_id, pickup_location, drop_location, booking_date, num_passengers, payment_method, special_requests, driver_id, car_id, status) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
+                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, booking.getCustomerId());
             stmt.setString(2, booking.getPickupLocation());
             stmt.setString(3, booking.getDropLocation());
-            stmt.setTimestamp(4, booking.getBookingDate());
+            stmt.setTimestamp(4, booking.getBookingDate()); // Set booking date
             stmt.setInt(5, booking.getNumPassengers());
             stmt.setString(6, booking.getPaymentMethod());
             stmt.setString(7, booking.getSpecialRequests());
@@ -134,9 +135,7 @@ public class BookingDAO {
         }
     }
 
-    
-    
-    
+    // Method to get bookings by customer ID
     public List<Booking> getBookingsByCustomerId(int customerId) {
         List<Booking> bookings = new ArrayList<>();
         String query = "SELECT * FROM bookings WHERE customer_id = ? ORDER BY booking_date DESC";
@@ -159,9 +158,7 @@ public class BookingDAO {
         }
         return bookings;
     }
-    
-    
-    
+
     // Method to get assigned rides for a driver
     public List<Booking> getAssignedRides(int driverId) {
         List<Booking> rides = new ArrayList<>();
@@ -184,27 +181,8 @@ public class BookingDAO {
         }
         return rides;
     }
-    
-    public Booking getBookingById(int bookingId) {
-        String query = "SELECT * FROM bookings WHERE booking_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, bookingId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                Booking booking = new Booking();
-                booking.setBookingId(rs.getInt("booking_id"));
-                booking.setPickupLocation(rs.getString("pickup_location"));
-                booking.setDropLocation(rs.getString("drop_location"));
-                booking.setStatus(rs.getString("status"));
-                booking.setFare(rs.getDouble("fare"));
-                booking.setNumPassengers(rs.getInt("num_passengers"));
-                return booking;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null; // Return null if no booking is found
-    }
+
+  
 
     // Method to mark a ride as completed
     public boolean completeRide(int bookingId) {
@@ -300,8 +278,6 @@ public class BookingDAO {
         return false;
     }
 
-    
-    
     // Complete a ride and submit fare
     public boolean completeRide(int bookingId, double fare) {
         String query = "UPDATE bookings SET status = 'Completed', fare = ? WHERE booking_id = ?";
@@ -314,4 +290,142 @@ public class BookingDAO {
         }
         return false;
     }
+
+    // Method to get customer name by booking ID
+    public String getCustomerNameByBookingId(int bookingId) {
+        String query = "SELECT c.full_name FROM customers c JOIN bookings b ON c.customer_id = b.customer_id WHERE b.booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("full_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no customer name is found
+    }
+
+    // Method to get customer phone by booking ID
+    public String getCustomerPhoneByBookingId(int bookingId) {
+        String query = "SELECT c.phone FROM customers c JOIN bookings b ON c.customer_id = b.customer_id WHERE b.booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("phone");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no customer phone is found
+    }
+
+    // Method to get driver name by booking ID
+    public String getDriverNameByBookingId(int bookingId) {
+        String query = "SELECT d.full_name FROM drivers d JOIN bookings b ON d.driver_id = b.driver_id WHERE b.booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("full_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no driver name is found
+    }
+
+    // Method to get driver phone by booking ID
+    public String getDriverPhoneByBookingId(int bookingId) {
+        String query = "SELECT d.phone FROM drivers d JOIN bookings b ON d.driver_id = b.driver_id WHERE b.booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("phone");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no driver phone is found
+    }
+
+    // Method to get pickup location by booking ID
+    public String getPickupLocationByBookingId(int bookingId) {
+        String query = "SELECT pickup_location FROM bookings WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("pickup_location");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no pickup location is found
+    }
+
+    // Method to get drop location by booking ID
+    public String getDropLocationByBookingId(int bookingId) {
+        String query = "SELECT drop_location FROM bookings WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("drop_location");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no drop location is found
+    }
+    
+
+    public java.sql.Timestamp getBookingDateByBookingId(int bookingId) {
+        String query = "SELECT booking_date FROM bookings WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getTimestamp("booking_date");
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getBookingDateByBookingId: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null; // Return null if no booking date is found
+    }
+
+    
+    public Booking getBookingById(int bookingId) {
+        String query = "SELECT * FROM bookings WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setCustomerId(rs.getInt("customer_id"));
+                booking.setDriverId(rs.getInt("driver_id"));
+                booking.setCarId(rs.getInt("car_id"));
+                booking.setPickupLocation(rs.getString("pickup_location"));
+                booking.setDropLocation(rs.getString("drop_location"));
+                booking.setBookingDate(rs.getTimestamp("booking_date"));
+                booking.setStatus(rs.getString("status"));
+                booking.setDistance(rs.getDouble("distance"));
+                booking.setFare(rs.getDouble("fare"));
+                booking.setNumPassengers(rs.getInt("num_passengers"));
+                booking.setPaymentMethod(rs.getString("payment_method")); // Fetch payment method
+                booking.setSpecialRequests(rs.getString("special_requests"));
+                booking.setCancellationReason(rs.getString("cancellation_reason"));
+                return booking;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error in getBookingById: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null; // Return null if no booking is found
+    }
+
 }

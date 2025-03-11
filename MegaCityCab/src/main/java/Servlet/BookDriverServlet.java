@@ -40,6 +40,6 @@ public class BookDriverServlet extends HttpServlet {
         }
 
         // Redirect to the customer dashboard
-        request.getRequestDispatcher("customerDashboard.jsp").forward(request, response);
+        request.getRequestDispatcher("customer-dashboard.jsp").forward(request, response);
     }
 }

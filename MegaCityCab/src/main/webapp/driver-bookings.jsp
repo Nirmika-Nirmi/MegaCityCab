@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, Bean.Booking, Dao.BookingDAO" %>
+<%@ page import="java.util.List, Bean.Booking, Dao.BookingDAO, java.sql.Timestamp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,22 +45,44 @@
                 <%
                     } else {
                         for (Booking ride : assignedRides) {
+                            // Fetch additional details for the booking
+                            String customerName = bookingDAO.getCustomerNameByBookingId(ride.getBookingId());
+                            String customerPhone = bookingDAO.getCustomerPhoneByBookingId(ride.getBookingId());
+                            Timestamp bookingDate = bookingDAO.getBookingDateByBookingId(ride.getBookingId());
                 %>
                     <div class="ride-item">
                         <p><strong>Ride ID:</strong> <%= ride.getBookingId() %></p>
+                        <p><strong>Customer Name:</strong> <%= customerName %></p>
+                        <p><strong>Customer Phone:</strong> <%= customerPhone %></p>
                         <p><strong>Pickup Location:</strong> <%= ride.getPickupLocation() %></p>
                         <p><strong>Drop Location:</strong> <%= ride.getDropLocation() %></p>
+                        <p><strong>Payment Method:</strong> <%= ride.getPaymentMethod() != null ? ride.getPaymentMethod() : "Not Specified" %></p>
+                        <p><strong>Number of Passengers:</strong> <%= ride.getNumPassengers() %></p>
+                        <p><strong>Special Requests:</strong> <%= ride.getSpecialRequests() != null ? ride.getSpecialRequests() : "None" %></p>
+                        <p><strong>Booking Date:</strong> <%= bookingDate != null ? bookingDate : "Not Available" %></p>
                         <p><strong>Status:</strong> <%= ride.getStatus() %></p>
-                        <p><strong>Fare:</strong> $<%= ride.getFare() %></p>
+
                         <%
                             if (ride.getStatus().equals("Pending")) {
                         %>
-                            <a href="${pageContext.request.contextPath}/RideActionServlet?action=accept&bookingId=<%= ride.getBookingId() %>" class="btn btn-success">Accept</a>
-                            <a href="${pageContext.request.contextPath}/RideActionServlet?action=reject&bookingId=<%= ride.getBookingId() %>" class="btn btn-danger">Reject</a>
+                            <form action="${pageContext.request.contextPath}/RideActionServlet" method="post" style="display: inline;">
+                                <input type="hidden" name="bookingId" value="<%= ride.getBookingId() %>" />
+                                <input type="hidden" name="action" value="accept" />
+                                <button type="submit" class="btn btn-success">Accept</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/RideActionServlet" method="post" style="display: inline;">
+                                <input type="hidden" name="bookingId" value="<%= ride.getBookingId() %>" />
+                                <input type="hidden" name="action" value="reject" />
+                                <button type="submit" class="btn btn-danger">Reject</button>
+                            </form>
                         <%
                             } else if (ride.getStatus().equals("Confirmed")) {
                         %>
-                            <a href="${pageContext.request.contextPath}/RideActionServlet?action=complete&bookingId=<%= ride.getBookingId() %>" class="btn btn-primary">Mark as Completed</a>
+                            <form action="${pageContext.request.contextPath}/RideActionServlet" method="post" style="display: inline;">
+                                <input type="hidden" name="bookingId" value="<%= ride.getBookingId() %>" />
+                                <input type="hidden" name="action" value="complete" />
+                                <button type="submit" class="btn btn-primary">Mark as Completed</button>
+                            </form>
                         <%
                             }
                         %>

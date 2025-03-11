@@ -51,6 +51,9 @@
         .driver-list th {
             background-color: #f2f2f2;
         }
+        .btn {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -97,14 +100,28 @@
         <table>
             <tr>
                 <th>Driver Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>License Number</th>
                 <th>Car Model</th>
+                <th>Plate Number</th>
+                <th>Fuel Type</th>
+                <th>AC</th>
+                <th>GPS</th>
                 <th>Rating</th>
                 <th>Action</th>
             </tr>
             <% for (Driver driver : drivers) { %>
             <tr>
                 <td><%= driver.getFullName() %></td>
+                <td><%= driver.getEmail() %></td>
+                <td><%= driver.getPhoneNumber() %></td>
+                <td><%= driver.getLicenseNumber() %></td>
                 <td><%= driver.getCar().getModel() %></td>
+                <td><%= driver.getCar().getPlateNumber() %></td>
+                <td><%= driver.getCar().getFuelType() %></td>
+                <td><%= driver.getCar().isAc() ? "Yes" : "No" %></td>
+                <td><%= driver.getCar().isGps() ? "Yes" : "No" %></td>
                 <td><%= driver.getAverageRating() %></td>
                 <td>
                     <a href="bookCab.jsp?driverId=<%= driver.getDriverId() %>" class="btn btn-primary btn-sm">Book Now</a>
