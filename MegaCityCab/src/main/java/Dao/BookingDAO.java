@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import Bean.Billing;
 import Bean.Booking;
 
 public class BookingDAO {
@@ -151,7 +153,59 @@ public class BookingDAO {
         }
         return bookings;
     }
+    
+    public boolean cancelBooking(int bookingId) {
+        String query = "UPDATE bookings SET status = 'Cancelled' WHERE booking_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            return stmt.executeUpdate() > 0; // Returns true if the cancellation is successful
+        } catch (SQLException e) {
+            System.err.println("SQL Error in cancelBooking: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 
+
+    public List<Booking> getAllBookingsWithPayments() {
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT b.booking_id, b.customer_id, b.driver_id, b.pickup_location, b.drop_location, "
+                     + "b.booking_date, b.status, b.fare, bl.payment_status, bl.bill_date "
+                     + "FROM bookings b "
+                     + "LEFT JOIN billing bl ON b.booking_id = bl.booking_id "
+                     + "ORDER BY b.booking_date DESC";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setCustomerId(rs.getInt("customer_id"));
+                booking.setDriverId(rs.getInt("driver_id"));
+                booking.setPickupLocation(rs.getString("pickup_location"));
+                booking.setDropLocation(rs.getString("drop_location"));
+                booking.setBookingDate(rs.getTimestamp("booking_date"));
+                booking.setStatus(rs.getString("status"));
+                booking.setFare(rs.getDouble("fare"));
+
+                // Add payment details
+                Billing billing = new Billing();
+                billing.setPaymentStatus(rs.getString("payment_status"));
+                billing.setBillDate(rs.getTimestamp("bill_date"));
+                booking.setBilling(billing);
+
+                bookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+   
+    
 
     public Booking getBookingById(int bookingId) {
         String query = "SELECT * FROM bookings WHERE booking_id = ?";

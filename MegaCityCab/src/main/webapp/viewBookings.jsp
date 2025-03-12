@@ -31,22 +31,38 @@
                                 <th>Booking ID</th>
                                 <th>Pickup Location</th>
                                 <th>Drop Location</th>
+                                <th>Driver Name</th>
+                                <th>Driver Phone</th>
                                 <th>Status</th>
                                 <th>Fare</th>
                                 <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
                                 for (Booking booking : bookings) {
+                                    String driverName = bookingDAO.getDriverNameByBookingId(booking.getBookingId());
+                                    String driverPhone = bookingDAO.getDriverPhoneByBookingId(booking.getBookingId());
                             %>
                                 <tr>
                                     <td><%= booking.getBookingId() %></td>
                                     <td><%= booking.getPickupLocation() %></td>
                                     <td><%= booking.getDropLocation() %></td>
+                                    <td><%= driverName != null ? driverName : "Not Assigned" %></td>
+                                    <td><%= driverPhone != null ? driverPhone : "Not Assigned" %></td>
                                     <td><%= booking.getStatus() %></td>
                                     <td>$<%= booking.getFare() %></td>
                                     <td><%= booking.getBookingDate() %></td>
+                                    <td>
+                                        <% if (booking.getStatus().equals("Pending")) { %>
+                                            <!-- Button to trigger the cancellation -->
+                                            <form action="CancelBookingServlet" method="post" style="display: inline;">
+                                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+                                                <button type="submit" class="btn btn-danger btn-sm">Cancel Booking</button>
+                                            </form>
+                                        <% } %>
+                                    </td>
                                 </tr>
                             <%
                                 }
@@ -58,5 +74,8 @@
             }
         %>
     </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

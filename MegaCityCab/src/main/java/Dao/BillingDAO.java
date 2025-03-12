@@ -1,6 +1,8 @@
 package Dao;
 
 import Bean.Billing;
+import Bean.Booking;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -112,4 +114,8 @@ public class BillingDAO {
         }
         return paymentHistory;
     }
+    
+    
+
+    
 }

@@ -130,7 +130,7 @@
         <a href="admin-dashboard.jsp">Home</a>
         <a href="viewDrivers.jsp">View Drivers</a>
         <a href="viewCustomers.jsp">View Customers</a>
-        <a href="manageBookings.jsp">Manage Bookings</a>
+        <a href="adminBookingHistory.jsp">Manage Bookings</a>
         <a href="manageCars.jsp">Manage Cars</a>
         <a href="reports.jsp">Reports</a>
         <a href="adminProfile.jsp">Profile</a>

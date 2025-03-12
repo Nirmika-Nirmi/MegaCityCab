@@ -22,6 +22,8 @@ public class Billing {
     private String paymentStatus;
     private Timestamp billDate;
 
+    
+    
     // Getters and Setters
     public int getBillId() { return billId; }
     public void setBillId(int billId) { this.billId = billId; }
@@ -76,4 +78,7 @@ public class Billing {
 
     public Timestamp getBillDate() { return billDate; }
     public void setBillDate(Timestamp billDate) { this.billDate = billDate; }
+    
+    
+    
 }

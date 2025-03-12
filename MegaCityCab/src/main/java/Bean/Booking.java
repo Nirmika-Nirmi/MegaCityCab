@@ -18,7 +18,7 @@ public class Booking {
     private String specialRequests;
     private String cancellationReason;
     private Car car;
-    
+    private Billing billing;
     
     // Getters and Setters
     public int getBookingId() {
@@ -141,4 +141,7 @@ public class Booking {
 	public void setCar(Car car) {
 		this.car = car;
 	}
-}
+
+    public Billing getBilling() { return billing; }
+    public void setBilling(Billing billing) { this.billing = billing; }}
+	
