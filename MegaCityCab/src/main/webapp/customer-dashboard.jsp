@@ -87,22 +87,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="customerDashboard.jsp">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="viewBookings.jsp">View Bookings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="customerDriversList.jsp">Driver List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="edit-profile.jsp">Edit Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="confirmLogout()">Logout</a>
-                    </li>
-                </ul>
+    <li class="nav-item">
+        <a class="nav-link" href="customerDashboard.jsp">Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="viewBookings.jsp">View Bookings</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="customerDriversList.jsp">Driver List</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="PaymentHistoryServlet">Payment History</a> <!-- Link to Payment History -->
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="edit-profile.jsp">Edit Profile</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#" onclick="confirmLogout()">Logout</a>
+    </li>
+</ul>
             </div>
         </div>
     </nav>
@@ -138,33 +141,6 @@
                     <div class="alert alert-info">
                         <strong>Upcoming Bookings:</strong> <c:out value="${sessionScope.upcomingBookingsCount != null ? sessionScope.upcomingBookingsCount : 0}" /> bookings.
                     </div>
-                </div>
-
-                <!-- Driver List -->
-                <div class="driver-list">
-                    <h4>Available Drivers</h4>
-                    <%
-                        DriverDAO driverDAO = new DriverDAO();
-                        List<Driver> drivers = driverDAO.getAvailableDrivers();
-                    %>
-                    <table>
-                        <tr>
-                            <th>Driver Name</th>
-                            <th>Car Model</th>
-                            <th>Rating</th>
-                            <th>Action</th>
-                        </tr>
-                        <% for (Driver driver : drivers) { %>
-                        <tr>
-                            <td><%= driver.getFullName() %></td>
-                            <td><%= driver.getCar().getModel() %></td>
-                            <td><%= driver.getAverageRating() %></td>
-                            <td>
-                                <a href="bookCab.jsp?driverId=<%= driver.getDriverId() %>" class="btn btn-primary btn-sm">Book Now</a>
-                            </td>
-                        </tr>
-                        <% } %>
-                    </table>
                 </div>
             </div>
         </div>

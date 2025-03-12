@@ -71,17 +71,22 @@ public class DriverDAO {
         return -1; // Return -1 if driver not found
     }
     
+    
     public List<Billing> getEarningsHistory(int driverId) {
         List<Billing> earnings = new ArrayList<>();
-        String query = "SELECT b.* FROM billing b JOIN bookings bk ON b.booking_id = bk.booking_id WHERE bk.driver_id = ?";
-        
-        // Initialize the connection
+        String query = "SELECT b.*, c.full_name AS customer_name, c.phone AS customer_phone, " +
+                       "bk.pickup_location, bk.drop_location " +
+                       "FROM billing b " +
+                       "JOIN bookings bk ON b.booking_id = bk.booking_id " +
+                       "JOIN customers c ON b.customer_id = c.customer_id " +
+                       "WHERE bk.driver_id = ?";
+
         try (Connection connection = DBConnection.getConnection(); // Ensure DBConnection.getConnection() is implemented
              PreparedStatement stmt = connection.prepareStatement(query)) {
-            
+
             // Set the driverId parameter
             stmt.setInt(1, driverId);
-            
+
             // Execute the query
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -90,11 +95,18 @@ public class DriverDAO {
                     billing.setBillId(rs.getInt("bill_id"));
                     billing.setBookingId(rs.getInt("booking_id"));
                     billing.setBillNumber(rs.getString("bill_number"));
+                    billing.setCustomerName(rs.getString("customer_name")); // Populate customer name
+                    billing.setCustomerPhone(rs.getString("customer_phone")); // Populate customer phone
+                    billing.setPickupLocation(rs.getString("pickup_location")); // Populate pickup location
+                    billing.setDropLocation(rs.getString("drop_location")); // Populate drop location
+                    billing.setDistance(rs.getDouble("distance")); // Populate distance
+                    billing.setStartingMeter(rs.getDouble("starting_meter")); // Populate starting meter
+                    billing.setEndingMeter(rs.getDouble("ending_meter")); // Populate ending meter
                     billing.setFinalAmount(rs.getDouble("final_amount"));
                     billing.setPaymentMethod(rs.getString("payment_method"));
                     billing.setPaymentStatus(rs.getString("payment_status"));
                     billing.setBillDate(rs.getTimestamp("bill_date"));
-                    
+
                     // Add the billing object to the list
                     earnings.add(billing);
                 }
@@ -108,9 +120,10 @@ public class DriverDAO {
             System.err.println("Error in getEarningsHistory: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return earnings;
     }
+
 
     public static Driver getDriverById(int driverId) {
         Driver driver = null;
@@ -245,6 +258,7 @@ public class DriverDAO {
         }
         return null; // Return null if no driver is found
     }
+    
     
     
     

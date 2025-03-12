@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Receipt</title>
+    <title>View Receipt</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Payment Receipt</h1>
+        <h1>Receipt Details</h1>
 
         <%
             // Retrieve billId from the request
@@ -39,8 +39,6 @@
                             <p><strong>Pickup Location:</strong> <%= billing.getPickupLocation() %></p>
                             <p><strong>Drop Location:</strong> <%= billing.getDropLocation() %></p>
                             <p><strong>Distance:</strong> <%= billing.getDistance() %> KM</p>
-                            <p><strong>Starting Meter:</strong> <%= billing.getStartingMeter() %> KM</p>
-                            <p><strong>Ending Meter:</strong> <%= billing.getEndingMeter() %> KM</p>
                             <p><strong>Fare:</strong> $<%= billing.getFinalAmount() %></p>
                             <p><strong>Payment Method:</strong> <%= billing.getPaymentMethod() %></p>
                             <p><strong>Payment Status:</strong> <%= billing.getPaymentStatus() %></p>

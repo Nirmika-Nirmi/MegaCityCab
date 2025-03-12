@@ -96,6 +96,9 @@
                         <a class="nav-link" href="driver-bookings.jsp">View All Rides</a>
                     </li>
                     <li class="nav-item">
+                         <a class="nav-link" href="DriverEarningsHistory.jsp">Earnings History</a> 
+                   </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="driverProfile.jsp">Edit Profile</a>
                     </li>
                     <li class="nav-item">
@@ -172,68 +175,26 @@
             </div>
         </div>
 
-        <!-- Earnings Summary -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Earnings Summary</h3>
-            </div>
-            <div class="card-body earnings-summary">
-                <%
-                    BookingDAO bookingDAO = new BookingDAO();
-                    double totalEarnings = bookingDAO.getTotalEarnings(driverId);
-                %>
-                <p><strong>Total Earnings:</strong> $<%= String.format("%.2f", totalEarnings) %></p>
-                <p><strong>Completed Rides:</strong> <%= bookingDAO.getCompletedRidesCount(driverId) %></p>
-            </div>
-        </div>
-
-        <!-- Assigned Rides -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Assigned Rides</h3>
-            </div>
-            <div class="card-body">
-                <%
-                    List<Booking> assignedRides = bookingDAO.getAssignedRides(driverId);
-
-                    if (assignedRides.isEmpty()) {
-                %>
-                    <p>No rides assigned.</p>
-                <%
-                    } else {
-                        for (Booking ride : assignedRides) {
-                %>
-                    <div class="ride-item">
-                        <p><strong>Ride ID:</strong> <%= ride.getBookingId() %></p>
-                        <p><strong>Pickup Location:</strong> <%= ride.getPickupLocation() %></p>
-                        <p><strong>Drop Location:</strong> <%= ride.getDropLocation() %></p>
-                        <p><strong>Status:</strong> <%= ride.getStatus() %></p>
-                        <%
-                            if (ride.getStatus().equals("Pending")) {
-                        %>
-                            <form action="${pageContext.request.contextPath}/RideActionServlet" method="post" style="display: inline;">
-                                <input type="hidden" name="bookingId" value="<%= ride.getBookingId() %>" />
-                                <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
-                                <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
-                            </form>
-                        <%
-                            } else if (ride.getStatus().equals("Confirmed")) {
-                        %>
-                            <form action="${pageContext.request.contextPath}/CompleteRideServlet" method="post" style="display: inline;">
-                                <input type="hidden" name="bookingId" value="<%= ride.getBookingId() %>" />
-                                <button type="submit" class="btn btn-primary">Complete Ride</button>
-                            </form>
-                        <%
-                            }
-                        %>
-                    </div>
-                <%
-                        }
-                    }
-                %>
-            </div>
-        </div>
+<!-- Earnings Summary -->
+<div class="card">
+    <div class="card-header">
+        <h3>Earnings Summary</h3>
     </div>
+    <div class="card-body earnings-summary">
+<%
+    BookingDAO bookingDAO = new BookingDAO();
+    double totalEarnings = bookingDAO.getTotalEarnings(driverId);
+    int completedRides = bookingDAO.getCompletedRidesCount(driverId);
+
+    // Debug statements
+    out.println("<p>Total Earnings : $" + totalEarnings + "</p>");
+    out.println("<p>Completed Rides : " + completedRides + "</p>");
+%>
+        <p><a href="driverEarningsHistory.jsp" class="btn btn-info">View Earnings History</a></p> <!-- Add this line -->
+    </div>
+</div>
+
+
 
     <!-- Footer -->
     <div class="footer">

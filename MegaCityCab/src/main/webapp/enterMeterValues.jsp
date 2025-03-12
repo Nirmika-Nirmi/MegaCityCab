@@ -39,11 +39,15 @@
                     String pickupLocation = booking.getPickupLocation();
                     String dropLocation = booking.getDropLocation();
                     String paymentMethod = booking.getPaymentMethod(); // Fetch payment method
+
+                    // Debug log
+                    System.out.println("Payment Method from Database: " + paymentMethod);
         %>
                     <form action="CalculateBillServlet" method="post">
                         <!-- Hidden fields for bookingId and other details -->
                         <input type="hidden" name="bookingId" value="<%= bookingId %>" />
-                        <input type="hidden" name="customerId" value="<%= booking.getCustomerId() %>" />
+                        <input type="hidden" name="customerName" value="<%= customerName %>" />
+                        <input type="hidden" name="customerPhone" value="<%= customerPhone %>" />
                         <input type="hidden" name="pickupLocation" value="<%= pickupLocation %>" />
                         <input type="hidden" name="dropLocation" value="<%= dropLocation %>" />
                         <input type="hidden" name="paymentMethod" value="<%= paymentMethod %>" />

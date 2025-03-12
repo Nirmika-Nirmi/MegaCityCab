@@ -7,97 +7,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
         }
 
+        /* ======= Header ======= */
         header {
-            background-color: #333;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 1rem;
+            padding: 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* ======= Navigation Bar ======= */
         nav {
-            background-color: #444;
-            overflow: hidden;
+            background: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         nav a {
-            color: white;
-            padding: 14px 20px;
-            text-align: center;
+            color: #555;
+            padding: 10px 20px;
+            margin: 0 5px;
             text-decoration: none;
-            display: inline-block;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
         nav a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-
-        .container {
-            padding: 2rem;
-        }
-
-        .welcome {
-            font-size: 20px;
-        }
-
-        .overview {
-            margin-top: 30px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .actions {
-            margin-top: 20px;
-        }
-
-        .actions a {
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #007BFF;
+            background: #667eea;
             color: white;
-            text-decoration: none;
-            border-radius: 5px;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
-        .actions a:hover {
-            background-color: #0056b3;
+        /* ======= Main Container ======= */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .logout-btn {
-            background-color: #dc3545;
-        }
-
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-
-        /* Notification Styles */
-        .notification {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
+        /* ======= Welcome Section ======= */
+        .welcome {
             text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .notification.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .welcome p {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #444;
         }
 
-        .notification.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .welcome p:first-child {
+            font-size: 24px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav a {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .welcome p {
+                font-size: 16px;
+            }
+
+            .welcome p:first-child {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
@@ -110,7 +127,7 @@
 
     <!-- Navigation Bar -->
     <nav>
-        <a href="adminDashboard.jsp">Home</a>
+        <a href="admin-dashboard.jsp">Home</a>
         <a href="viewDrivers.jsp">View Drivers</a>
         <a href="viewCustomers.jsp">View Customers</a>
         <a href="manageBookings.jsp">Manage Bookings</a>
@@ -133,13 +150,7 @@
         <% 
             } 
         %>
-
-
-
-
-
-
-
+    </div>
 
 </body>
 </html>

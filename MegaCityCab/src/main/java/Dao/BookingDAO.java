@@ -21,37 +21,7 @@ public class BookingDAO {
         }
     }
 
-    // Method to get the count of completed rides for a driver
-    public int getCompletedRidesCount(int driverId) {
-        String query = "SELECT COUNT(*) AS completed_rides FROM bookings WHERE driver_id = ? AND status = 'Completed'";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, driverId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("completed_rides");
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Error in getCompletedRidesCount: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return 0; // Return 0 if no completed rides are found
-    }
 
-    // Method to get the total earnings for a driver
-    public double getTotalEarnings(int driverId) {
-        String query = "SELECT SUM(fare) AS total_earnings FROM bookings WHERE driver_id = ? AND status = 'Completed'";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, driverId);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getDouble("total_earnings");
-            }
-        } catch (SQLException e) {
-            System.err.println("SQL Error in getTotalEarnings: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return 0.0; // Return 0.0 if no earnings are found
-    }
 
     // Method to update driver availability
     public boolean updateDriverAvailability(int driverId, boolean isAvailable) {
@@ -98,6 +68,7 @@ public class BookingDAO {
         return 0; // Return 0 if no bookings found
     }
 
+    
     // Method to save a new booking
     public boolean saveBooking(Booking booking) {
         String query = "INSERT INTO bookings (customer_id, pickup_location, drop_location, booking_date, num_passengers, payment_method, special_requests, driver_id, car_id, status) "
@@ -182,8 +153,6 @@ public class BookingDAO {
     }
 
 
-
-    // Method to get booking by ID
     public Booking getBookingById(int bookingId) {
         String query = "SELECT * FROM bookings WHERE booking_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -192,18 +161,22 @@ public class BookingDAO {
             if (rs.next()) {
                 Booking booking = new Booking();
                 booking.setBookingId(rs.getInt("booking_id"));
+                booking.setCustomerId(rs.getInt("customer_id"));
+                booking.setDriverId(rs.getInt("driver_id"));
                 booking.setPickupLocation(rs.getString("pickup_location"));
                 booking.setDropLocation(rs.getString("drop_location"));
-                booking.setStatus(rs.getString("status"));
-                booking.setFare(rs.getDouble("fare"));
                 booking.setNumPassengers(rs.getInt("num_passengers"));
+                booking.setPaymentMethod(rs.getString("payment_method")); // Ensure this line is present
+                booking.setStatus(rs.getString("status"));
                 return booking;
             }
         } catch (SQLException e) {
+            System.err.println("SQL Error in getBookingById: " + e.getMessage());
             e.printStackTrace();
         }
-        return null; // Return null if no booking is found
+        return null;
     }
+
 
     // Method to mark a ride as completed
     public boolean completeRide(int bookingId) {
@@ -433,6 +406,102 @@ public class BookingDAO {
         return null; // Return null if no payment method is found
     }
     
+
+
+    public double getDistanceByBookingId(int bookingId) {
+        String query = "SELECT distance FROM bookings WHERE booking_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("distance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+    
+    
+    public int getCustomerIdByBookingId(int bookingId) {
+        String query = "SELECT customer_id FROM bookings WHERE booking_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("customer_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if not found
+    }
+    
+    public int getDriverIdByBookingId(int bookingId) {
+        String query = "SELECT driver_id FROM bookings WHERE booking_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, bookingId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("driver_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Return -1 if not found
+    }
+    
+    
+    
+    public boolean completeRide(Connection conn, int bookingId, double finalAmount) throws SQLException {
+        String query = "UPDATE bookings SET status = 'Completed', fare = ? WHERE booking_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDouble(1, finalAmount);
+            stmt.setInt(2, bookingId);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw e; // Re-throw the exception for transaction management
+        }
+    }
+    
     
 
-}
+        // Method to calculate total earnings for a driver
+        public double getTotalEarnings(int driverId) {
+            double totalEarnings = 0.0;
+            String query = "SELECT SUM(final_amount) AS total FROM billing WHERE driver_id = ? AND payment_status = 'Paid'";
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, driverId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    totalEarnings = rs.getDouble("total");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return totalEarnings;
+        }
+
+        // Method to count completed rides for a driver
+        public int getCompletedRidesCount(int driverId) {
+            int completedRides = 0;
+            String query = "SELECT COUNT(*) AS count FROM billing WHERE driver_id = ? AND payment_status = 'Paid'";
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, driverId);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    completedRides = rs.getInt("count");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return completedRides;
+        }
+    }
+   

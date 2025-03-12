@@ -39,6 +39,8 @@ public class CustomerLoginServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Invalid credentials. Please try again.");
             request.getRequestDispatcher("customerLogin.jsp").forward(request, response);
         }
+        
+        
     }
     }
 

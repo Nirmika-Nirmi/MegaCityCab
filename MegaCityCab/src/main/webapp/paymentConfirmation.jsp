@@ -9,46 +9,35 @@
 </head>
 <body>
     <div class="container">
-        <h1>Payment Confirmation</h1>
+        <h1>Payment Details</h1><br>
 
-        <!-- Debugging: Print all request attributes -->
-        <div class="alert alert-info">
-            <strong>Debugging:</strong><br>
-            bookingId: ${bookingId}<br>
-            customerName: ${customerName}<br>
-            customerPhone: ${customerPhone}<br>
-            pickupLocation: ${pickupLocation}<br>
-            dropLocation: ${dropLocation}<br>
-            distance: ${distance}<br>
-            startingMeter: ${startingMeter}<br>
-            endingMeter: ${endingMeter}<br>
-            finalAmount: ${finalAmount}<br>
-            paymentMethod: ${paymentMethod}<br>
+        <!-- Payment Details -->
+        <div class="mb-3">
+            <p><strong>Customer Name:</strong> ${customerName}</p>
+            <p><strong>Customer Phone:</strong> ${customerPhone}</p>
+            <p><strong>Pickup Location:</strong> ${pickupLocation}</p>
+            <p><strong>Drop Location:</strong> ${dropLocation}</p>
+            <p><strong>Distance:</strong> ${distance} KM</p>
+            <p><strong>Starting Meter:</strong> ${startingMeter} KM</p>
+            <p><strong>Ending Meter:</strong> ${endingMeter} KM</p>
+            <p><strong>Fare:</strong> $${finalAmount}</p>
+            <p><strong>Payment Method:</strong> ${paymentMethod}</p>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h3>Payment Details</h3>
-            </div>
-            <div class="card-body">
-                <p><strong>Customer Name:</strong> ${customerName}</p>
-                <p><strong>Customer Phone:</strong> ${customerPhone}</p>
-                <p><strong>Pickup Location:</strong> ${pickupLocation}</p>
-                <p><strong>Drop Location:</strong> ${dropLocation}</p>
-                <p><strong>Distance:</strong> ${distance} KM</p>
-                <p><strong>Starting Meter:</strong> ${startingMeter} KM</p>
-                <p><strong>Ending Meter:</strong> ${endingMeter} KM</p>
-                <p><strong>Fare:</strong> $${finalAmount}</p>
-                <p><strong>Payment Method:</strong> ${paymentMethod}</p>
-            </div>
-        </div>
-
-        <form action="ConfirmPaymentServlet" method="post" class="mt-3">
-            <input type="hidden" name="bookingId" value="${bookingId}" />
-            <input type="hidden" name="finalAmount" value="${finalAmount}" />
-            <input type="hidden" name="paymentMethod" value="${paymentMethod}" />
-            <button type="submit" class="btn btn-success">Confirm Payment</button>
-        </form>
+        <!-- Confirmation Button -->
+<form action="ConfirmPaymentServlet" method="post">
+    <input type="hidden" name="bookingId" value="${bookingId}" />
+    <input type="hidden" name="customerName" value="${customerName}" />
+    <input type="hidden" name="customerPhone" value="${customerPhone}" />
+    <input type="hidden" name="pickupLocation" value="${pickupLocation}" />
+    <input type="hidden" name="dropLocation" value="${dropLocation}" />
+    <input type="hidden" name="startingMeter" value="${startingMeter}" />
+    <input type="hidden" name="endingMeter" value="${endingMeter}" />
+    <input type="hidden" name="distance" value="${distance}" />
+    <input type="hidden" name="finalAmount" value="${finalAmount}" />
+    <input type="hidden" name="paymentMethod" value="${paymentMethod}" />
+    <button type="submit" class="btn btn-primary">Confirm Payment</button>
+</form>
     </div>
 </body>
 </html>
