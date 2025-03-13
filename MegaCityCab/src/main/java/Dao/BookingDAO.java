@@ -130,6 +130,20 @@ public class BookingDAO {
         }
         return rides;
     }
+    
+    public int getTotalBookings() {
+        String query = "SELECT COUNT(*) AS total FROM bookings";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     // Method to get bookings by customer ID
     public List<Booking> getBookingsByCustomerId(int customerId) {
         List<Booking> bookings = new ArrayList<>();

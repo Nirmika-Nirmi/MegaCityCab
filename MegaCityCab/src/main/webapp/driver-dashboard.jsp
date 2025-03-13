@@ -8,80 +8,166 @@
     <title>Driver Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
+
+        /* ======= Navbar ======= */
         .navbar {
-            background-color: #343a40; /* Dark navbar */
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .navbar-brand, .navbar-nav .nav-link {
-            color: #ffffff !important; /* White text */
+
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: 600;
+            color: #667eea !important;
         }
+
+        .navbar-nav .nav-link {
+            color: #555 !important;
+            padding: 10px 20px;
+            margin: 0 5px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
         .navbar-nav .nav-link:hover {
-            color: #17a2b8 !important; /* Highlight on hover */
+            background: #667eea;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
+
+        .navbar-nav .nav-link.active {
+            background: #667eea;
+            color: white !important;
+        }
+
+        /* ======= Container ======= */
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #ffffff;
+            background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        /* ======= Header ======= */
         .header {
             text-align: center;
             margin-bottom: 30px;
         }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* ======= Card Styles ======= */
         .card {
             border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+
         .card-header {
-            background-color: #17a2b8; /* Teal header */
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border-radius: 10px 10px 0 0;
             padding: 15px;
         }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
         .card-body {
             padding: 20px;
         }
-        .btn {
-            margin-right: 10px;
-        }
+
+        /* ======= Driver Details ======= */
         .driver-details p {
             margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
         }
-        .ride-item {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 10px;
-            background-color: #f8f9fa; /* Light background for ride items */
+
+        .driver-details p strong {
+            color: #444;
         }
+
+        /* ======= Earnings Summary ======= */
         .earnings-summary {
-            background-color: #f8f9fa;
+            background: #f8f9fa;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 20px;
         }
+
+        .earnings-summary p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .earnings-summary p strong {
+            color: #444;
+        }
+
+        /* ======= Footer ======= */
         .footer {
             text-align: center;
             margin-top: 20px;
             padding: 10px;
-            background-color: #343a40; /* Dark footer */
-            color: #ffffff;
+            background: #2c3e50;
+            color: white;
             border-radius: 5px;
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .navbar-nav .nav-link {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card-header h3 {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
 <body>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Mega City Cab</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,14 +176,14 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="driverDashboard.jsp">Dashboard</a>
+                        <a class="nav-link active" href="driverDashboard.jsp">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="driver-bookings.jsp">View All Rides</a>
                     </li>
                     <li class="nav-item">
-                         <a class="nav-link" href="DriverEarningsHistory.jsp">Earnings History</a> 
-                   </li>
+                        <a class="nav-link" href="DriverEarningsHistory.jsp">Earnings History</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="driverProfile.jsp">Edit Profile</a>
                     </li>
@@ -175,26 +261,23 @@
             </div>
         </div>
 
-<!-- Earnings Summary -->
-<div class="card">
-    <div class="card-header">
-        <h3>Earnings Summary</h3>
+        <!-- Earnings Summary -->
+        <div class="card">
+            <div class="card-header">
+                <h3>Earnings Summary</h3>
+            </div>
+            <div class="card-body earnings-summary">
+                <%
+                    BookingDAO bookingDAO = new BookingDAO();
+                    double totalEarnings = bookingDAO.getTotalEarnings(driverId);
+                    int completedRides = bookingDAO.getCompletedRidesCount(driverId);
+                %>
+                <p><strong>Total Earnings:</strong> $<%= totalEarnings %></p>
+                <p><strong>Completed Rides:</strong> <%= completedRides %></p>
+                <p><a href="driverEarningsHistory.jsp" class="btn btn-primary">View Earnings History</a></p>
+            </div>
+        </div>
     </div>
-    <div class="card-body earnings-summary">
-<%
-    BookingDAO bookingDAO = new BookingDAO();
-    double totalEarnings = bookingDAO.getTotalEarnings(driverId);
-    int completedRides = bookingDAO.getCompletedRidesCount(driverId);
-
-    // Debug statements
-    out.println("<p>Total Earnings : $" + totalEarnings + "</p>");
-    out.println("<p>Completed Rides : " + completedRides + "</p>");
-%>
-        <p><a href="driverEarningsHistory.jsp" class="btn btn-info">View Earnings History</a></p> <!-- Add this line -->
-    </div>
-</div>
-
-
 
     <!-- Footer -->
     <div class="footer">

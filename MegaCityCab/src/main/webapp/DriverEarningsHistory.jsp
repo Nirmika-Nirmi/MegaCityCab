@@ -6,50 +6,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earnings History</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
+
+        /* ======= Container ======= */
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #ffffff;
+            background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
+        /* ======= Header ======= */
         h1 {
             text-align: center;
             margin-bottom: 20px;
-            color: #343a40;
+            font-size: 28px;
+            font-weight: 600;
+            color: #444;
         }
+
+        /* ======= Table Styles ======= */
         .table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         .table th, .table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         .table th {
-            background-color: #17a2b8;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            font-weight: 500;
         }
+
         .table tbody tr:hover {
-            background-color: #f1f1f1;
+            background-color: rgba(102, 126, 234, 0.05);
         }
+
+        /* ======= Alert Styles ======= */
         .alert {
             margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
         }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background-color: #e9f5ff;
+            border-color: #b8e2ff;
+            color: #31708f;
+        }
+
+        /* ======= Total Earnings ======= */
         .total-earnings {
             font-size: 1.2em;
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 20px;
             color: #28a745;
+            text-align: center;
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .table th, .table td {
+                padding: 8px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -61,14 +118,22 @@
             // Retrieve driver ID from session
             Integer driverId = (Integer) session.getAttribute("driverId");
             if (driverId == null) {
-                out.println("<p class='alert alert-danger'>Driver ID not found in session. Please <a href='driverLogin.jsp'>log in again</a>.</p>");
+        %>
+                <div class="alert alert-danger">
+                    Driver ID not found in session. Please <a href="driverLogin.jsp">log in again</a>.
+                </div>
+        <%
             } else {
                 // Fetch earnings history for the driver
                 DriverDAO driverDAO = new DriverDAO();
                 List<Billing> earnings = driverDAO.getEarningsHistory(driverId);
 
                 if (earnings.isEmpty()) {
-                    out.println("<p class='alert alert-info'>No earnings found.</p>");
+        %>
+                    <div class="alert alert-info">
+                        No earnings found.
+                    </div>
+        <%
                 } else {
                     // Calculate total earnings
                     double totalEarnings = 0;
@@ -122,5 +187,8 @@
             }
         %>
     </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

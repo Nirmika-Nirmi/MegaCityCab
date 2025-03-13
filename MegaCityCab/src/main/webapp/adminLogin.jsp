@@ -61,7 +61,7 @@
 
         .input-group input {
             width: 100%;
-            padding: 10px 10px 10px 40px;
+            padding: 10px 40px 10px 40px; /* Adjusted padding for icons */
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 14px;
@@ -76,21 +76,22 @@
 
         .input-group i {
             position: absolute;
-            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #888;
             font-size: 16px;
         }
 
-        /* ======= Password Toggle Button ======= */
-        .input-group .fa-eye,
-        .input-group .fa-eye-slash {
-            cursor: pointer;
+        .input-group .fa-envelope {
+            right: 10px; 
+            bottom:60px;
             color: #667eea;
-            position: absolute;
-            right: 12px;
-            left: auto;
+        }
+
+        .input-group .fa-lock {
+            right: 10px;
+            bottum:60px; 
+            color: #667eea;
         }
 
         /* ======= Button ======= */
@@ -143,9 +144,9 @@
 
             <!-- Password Input -->
             <div class="input-group">
-                <label>Password</label>
+                </i><label>Password</label>
                 <input type="password" name="password" id="password" placeholder="Enter your password" required>
-                <i class="fas fa-eye" id="togglePassword"></i>
+                <i class="fas fa-lock" ></i>
             </div>
 
             <!-- Login Button -->
@@ -159,17 +160,7 @@
         <% } %>
     </div>
 
-    <!-- JavaScript for Password Toggle -->
-    <script>
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
 
-        togglePassword.addEventListener('click', function () {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-        });
-    </script>
 
 </body>
 </html>

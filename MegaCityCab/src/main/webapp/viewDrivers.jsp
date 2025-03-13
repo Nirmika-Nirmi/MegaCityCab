@@ -8,77 +8,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Drivers</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
             margin: 0;
             padding: 20px;
-        }
-        h1 {
-            text-align: center;
             color: #333;
         }
+
+        /* ======= Header ======= */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* ======= Search Form ======= */
         .search-form {
             margin-bottom: 20px;
             text-align: center;
         }
+
         .search-form input[type="text"] {
-            padding: 8px;
+            padding: 10px;
             width: 300px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
         }
+
+        .search-form input[type="text"]:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
         .search-form button {
-            padding: 8px 16px;
-            background-color: #007BFF;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .search-form button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0px 5px 15px rgba(102, 126, 234, 0.4);
         }
+
+        /* ======= Table Styles ======= */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+
         th, td {
             padding: 12px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
+
         th {
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            font-weight: 500;
         }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+
         tr:hover {
-            background-color: #ddd;
+            background-color: rgba(102, 126, 234, 0.05);
         }
+
+        /* ======= Button Styles ======= */
         .btn {
-            background-color: #007BFF;
-            color: white;
-            padding: 5px 10px;
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 6px;
             text-decoration: none;
-            border-radius: 3px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
         .btn:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0px 5px 15px rgba(102, 126, 234, 0.4);
         }
-        .delete-btn {
-            background-color: #dc3545;
-        }
-        .delete-btn:hover {
-            background-color: #c82333;
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .search-form input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
         }
     </style>
 </head>
@@ -139,8 +191,8 @@
                     <td><%= driver.getStatus() %></td>
                     <td><%= driver.getAverageRating() %></td>
                     <td>
-                        <a href="DriverServlet?action=edit&driverId=<%= driver.getDriverId() %>" class="btn">Edit</a>
-                        <a href="DriverServlet?action=delete&driverId=<%= driver.getDriverId() %>" class="btn delete-btn">Delete</a>
+                        <a href="DriverServlet?action=edit&driverId=<%= driver.getDriverId() %>" class="btn btn-primary">Edit</a>
+                        <a href="DriverServlet?action=delete&driverId=<%= driver.getDriverId() %>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <%
@@ -155,5 +207,8 @@
             %>
         </tbody>
     </table>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

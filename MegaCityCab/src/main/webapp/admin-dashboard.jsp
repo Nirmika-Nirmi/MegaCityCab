@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="Bean.Admin" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="Dao.CustomerDAO, Dao.DriverDAO, Dao.BookingDAO, Dao.BillingDAO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* ======= General Styles ======= */
         body {
@@ -76,6 +77,7 @@
             background: linear-gradient(135deg, #f4f7fa, #e8eef7);
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
         }
 
         .welcome p {
@@ -88,6 +90,65 @@
             font-size: 24px;
             font-weight: 600;
             color: #667eea;
+        }
+
+        /* ======= Quick Stats Cards ======= */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card i {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #444;
+            margin: 10px 0;
+        }
+
+        .card p {
+            font-size: 16px;
+            color: #777;
+        }
+
+        /* ======= Footer ======= */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
 
         /* ======= Responsive Design ======= */
@@ -114,6 +175,10 @@
 
             .welcome p:first-child {
                 font-size: 20px;
+            }
+
+            .card-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -150,7 +215,36 @@
         <% 
             } 
         %>
+
+        <!-- Quick Stats Cards -->
+        <div class="card-container">
+            <div class="card">
+                <i class="fas fa-users"></i>
+                <h3>Total Customers</h3>
+                <p><%= new CustomerDAO().getTotalCustomers() %></p>
+            </div>
+            <div class="card">
+                <i class="fas fa-car"></i>
+                <h3>Total Drivers</h3>
+                <p><%= new DriverDAO().getTotalDrivers() %></p>
+            </div>
+            <div class="card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Total Bookings</h3>
+                <p><%= new BookingDAO().getTotalBookings() %></p>
+            </div>
+            <div class="card">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Total Revenue</h3>
+                <p>$<%= String.format("%.2f", new BillingDAO().getTotalRevenue()) %></p>
+            </div>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2023 Admin Dashboard. All rights reserved. | <a href="#">Privacy Policy</a>
+    </footer>
 
 </body>
 </html>

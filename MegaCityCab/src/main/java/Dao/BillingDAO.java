@@ -84,6 +84,19 @@ public class BillingDAO {
         return null; // Return null if no billing record is found
     }
     
+    public double getTotalRevenue() {
+        String query = "SELECT SUM(final_amount) AS total FROM billing WHERE payment_status = 'Paid'";
+        try (Connection connection = DBConnection.getConnection(); // Initialize the connection
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0; // Return 0.0 if no revenue is found or an error occurs
+    }
     
     
     public List<Billing> getPaymentHistoryByCustomerId(int customerId) {

@@ -7,81 +7,159 @@
     <title>Book a Cab</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
+            color: #333;
         }
+
+        /* ======= Header ======= */
         .header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 10px 20px;
+            padding: 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* ======= Navigation Bar ======= */
         .navbar {
-            padding: 15px;
-            background-color: #34495e;
-            color: white;
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         .navbar a {
-            color: white;
+            color: #555;
+            padding: 10px 20px;
+            margin: 0 5px;
             text-decoration: none;
-            margin-right: 20px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
+
         .navbar a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ======= Booking Form ======= */
+        .booking-form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-form label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .booking-form input,
+        .booking-form select,
+        .booking-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .booking-form input:focus,
+        .booking-form select:focus,
+        .booking-form textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .booking-form button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .booking-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ======= Footer ======= */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
             text-decoration: underline;
         }
-        .booking-form {
-            margin: 20px;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar a {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .booking-form {
+                margin: 10px;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
+
     <!-- Header -->
-    <div class="header bg-dark text-white text-center py-3">
+    <div class="header">
         <h1>Book a Cab</h1>
     </div>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mega City Cab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="customerDashboard.jsp">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="view-bookings.jsp">View Bookings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="customerDriversList.jsp">Driver List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="edit-profile.jsp">Edit Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="confirmLogout()">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav class="navbar">
+        <a href="customerDashboard.jsp">Dashboard</a>
+        <a href="view-bookings.jsp">View Bookings</a>
+        <a href="customerDriversList.jsp">Driver List</a>
+        <a href="edit-profile.jsp">Edit Profile</a>
+        <a href="#" onclick="confirmLogout()">Logout</a>
     </nav>
 
     <!-- Booking Form -->
@@ -97,8 +175,8 @@
                 <input type="text" class="form-control" id="dropLocation" name="dropLocation" required>
             </div>
             <div class="mb-3">
-                 <label for="pickupTime" class="form-label">Pickup Date and Time</label>
-                 <input type="datetime-local" class="form-control" id="pickupTime" name="pickupTime" required>
+                <label for="pickupTime" class="form-label">Pickup Date and Time</label>
+                <input type="datetime-local" class="form-control" id="pickupTime" name="pickupTime" required>
             </div>
             <div class="mb-3">
                 <label for="numPassengers" class="form-label">Number of Passengers</label>
@@ -110,7 +188,6 @@
                     <option value="">Select Payment Method</option>
                     <option value="Cash">Cash</option>
                     <option value="Card">Card</option>
-
                 </select>
             </div>
             <div class="mb-3">
@@ -122,7 +199,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+    <footer class="footer">
         <div class="container">
             <span>&copy; 2023 Mega City Cab. All rights reserved.</span>
         </div>

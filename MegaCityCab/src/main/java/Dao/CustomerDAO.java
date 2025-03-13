@@ -73,6 +73,18 @@ public class CustomerDAO {
     }
     
 
+    public int getTotalCustomers() {
+        String query = "SELECT COUNT(*) AS total FROM customers";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     
 
      // Fetch all customers from the database

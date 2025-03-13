@@ -8,87 +8,167 @@
     <title>Driver List</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
+
+        /* ======= Header ======= */
         .header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 10px 20px;
+            padding: 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* ======= Navigation Bar ======= */
         .navbar {
-            padding: 15px;
-            background-color: #34495e;
-            color: white;
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
         }
+
         .navbar a {
-            color: white;
+            color: #555;
+            padding: 10px 20px;
+            margin: 0 5px;
             text-decoration: none;
-            margin-right: 20px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
+
         .navbar a:hover {
-            text-decoration: underline;
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
+
+        .navbar a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* ======= Driver List ======= */
         .driver-list {
-            margin: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .driver-list table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .driver-list th, .driver-list td {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
+            font-size: 14px;
         }
+
         .driver-list th {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa; /* Light gray background */
+            color: #333; /* Dark text color */
+            font-weight: 600;
         }
-        .btn {
-            margin-right: 10px;
+
+        .driver-list tr:hover {
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+
+        .driver-list .btn {
+            padding: 6px 12px;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .driver-list .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ======= Footer ======= */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar a {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .driver-list {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .driver-list th, .driver-list td {
+                padding: 8px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
+
     <!-- Header -->
-    <div class="header bg-dark text-white text-center py-3">
+    <div class="header">
         <h1>Available Drivers</h1>
     </div>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mega City Cab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="customerDashboard.jsp">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="view-bookings.jsp">View Bookings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="customerDriversList.jsp">Driver List</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="edit-profile.jsp">Edit Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="confirmLogout()">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav class="navbar">
+        <a href="customerDashboard.jsp">Dashboard</a>
+        <a href="view-bookings.jsp">View Bookings</a>
+        <a href="customerDriversList.jsp" class="active">Driver List</a>
+        <a href="edit-profile.jsp">Edit Profile</a>
+        <a href="#" onclick="confirmLogout()">Logout</a>
     </nav>
 
     <!-- Driver List -->
@@ -98,41 +178,45 @@
             List<Driver> drivers = driverDAO.getAvailableDrivers();
         %>
         <table>
-            <tr>
-                <th>Driver Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>License Number</th>
-                <th>Car Model</th>
-                <th>Plate Number</th>
-                <th>Fuel Type</th>
-                <th>AC</th>
-                <th>GPS</th>
-                <th>Rating</th>
-                <th>Action</th>
-            </tr>
-            <% for (Driver driver : drivers) { %>
-            <tr>
-                <td><%= driver.getFullName() %></td>
-                <td><%= driver.getEmail() %></td>
-                <td><%= driver.getPhoneNumber() %></td>
-                <td><%= driver.getLicenseNumber() %></td>
-                <td><%= driver.getCar().getModel() %></td>
-                <td><%= driver.getCar().getPlateNumber() %></td>
-                <td><%= driver.getCar().getFuelType() %></td>
-                <td><%= driver.getCar().isAc() ? "Yes" : "No" %></td>
-                <td><%= driver.getCar().isGps() ? "Yes" : "No" %></td>
-                <td><%= driver.getAverageRating() %></td>
-                <td>
-                    <a href="bookCab.jsp?driverId=<%= driver.getDriverId() %>" class="btn btn-primary btn-sm">Book Now</a>
-                </td>
-            </tr>
-            <% } %>
+            <thead>
+                <tr>
+                    <th>Driver Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>License Number</th>
+                    <th>Car Model</th>
+                    <th>Plate Number</th>
+                    <th>Fuel Type</th>
+                    <th>AC</th>
+                    <th>GPS</th>
+                    <th>Rating</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (Driver driver : drivers) { %>
+                <tr>
+                    <td><%= driver.getFullName() %></td>
+                    <td><%= driver.getEmail() %></td>
+                    <td><%= driver.getPhoneNumber() %></td>
+                    <td><%= driver.getLicenseNumber() %></td>
+                    <td><%= driver.getCar().getModel() %></td>
+                    <td><%= driver.getCar().getPlateNumber() %></td>
+                    <td><%= driver.getCar().getFuelType() %></td>
+                    <td><%= driver.getCar().isAc() ? "Yes" : "No" %></td>
+                    <td><%= driver.getCar().isGps() ? "Yes" : "No" %></td>
+                    <td><%= driver.getAverageRating() %></td>
+                    <td>
+                        <a href="bookCab.jsp?driverId=<%= driver.getDriverId() %>" class="btn btn-primary btn-sm">Book Now</a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
         </table>
     </div>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+    <footer class="footer">
         <div class="container">
             <span>&copy; 2023 Mega City Cab. All rights reserved.</span>
         </div>

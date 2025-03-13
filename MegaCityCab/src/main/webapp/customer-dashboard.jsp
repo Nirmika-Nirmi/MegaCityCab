@@ -9,145 +9,220 @@
     <title>Customer Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
+        /* ======= General Styles ======= */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
+
+        /* ======= Header ======= */
         .header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            padding: 10px 20px;
+            padding: 1.5rem;
             text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        /* ======= Navigation Bar ======= */
         .navbar {
-            padding: 15px;
-            background-color: #34495e;
-            color: white;
+            background: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
         }
+
         .navbar a {
-            color: white;
+            color: #555;
+            padding: 10px 20px;
+            margin: 0 5px;
             text-decoration: none;
-            margin-right: 20px;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: all 0.3s ease;
         }
+
         .navbar a:hover {
-            text-decoration: underline;
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
+
+        /* ======= Dashboard Content ======= */
         .dashboard-content {
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
-            margin: 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+
         .dashboard-content h3 {
             margin-top: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #444;
         }
+
+        /* ======= Profile Section ======= */
         .profile-section {
             margin-top: 20px;
         }
-        .footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+
+        .profile-section h4 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 15px;
         }
-        .driver-list {
+
+        .profile-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .profile-card p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .profile-card p strong {
+            color: #444;
+        }
+
+        /* ======= Bookings Section ======= */
+        .bookings-section {
             margin-top: 20px;
         }
-        .driver-list table {
-            width: 100%;
-            border-collapse: collapse;
+
+        .bookings-section h4 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 15px;
         }
-        .driver-list th, .driver-list td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
+
+        .bookings-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-        .driver-list th {
-            background-color: #f2f2f2;
+
+        .bookings-card p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .bookings-card p strong {
+            color: #444;
+        }
+
+        /* ======= Footer ======= */
+        .footer {
+            background: #2c3e50; /* Dark blue color to match admin dashboard */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar a {
+                margin: 5px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .dashboard-content {
+                margin: 10px;
+                padding: 15px;
+            }
         }
     </style>
 </head>
 <body>
+
     <!-- Header -->
-    <div class="header bg-dark text-white text-center py-3">
+    <div class="header">
         <h1>Welcome, <c:out value="${sessionScope.fullName != null ? sessionScope.fullName : 'Guest'}" /></h1>
     </div>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mega City Cab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-    <li class="nav-item">
-        <a class="nav-link" href="customerDashboard.jsp">Dashboard</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="viewBookings.jsp">View Bookings</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="customerDriversList.jsp">Driver List</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="PaymentHistoryServlet">Payment History</a> <!-- Link to Payment History -->
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="edit-profile.jsp">Edit Profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#" onclick="confirmLogout()">Logout</a>
-    </li>
-</ul>
-            </div>
-        </div>
+    <nav class="navbar">
+        <a href="customerDashboard.jsp">Dashboard</a>
+        <a href="viewBookings.jsp">View Bookings</a>
+        <a href="customerDriversList.jsp">Driver List</a>
+        <a href="PaymentHistoryServlet">Payment History</a>
+        <a href="edit-profile.jsp">Edit Profile</a>
+        <a href="#" onclick="confirmLogout()">Logout</a>
     </nav>
 
     <!-- Dashboard Content -->
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-header bg-info text-white">
-                <h3>Customer Dashboard</h3>
+    <div class="dashboard-content">
+        <h3>Customer Dashboard</h3>
+
+        <!-- Profile Information -->
+        <div class="profile-section">
+            <h4>Profile Information</h4>
+            <div class="profile-card">
+                <p><strong>Full Name:</strong> <c:out value="${sessionScope.fullName != null ? sessionScope.fullName : 'Not Available'}" /></p>
+                <p><strong>Email:</strong> <c:out value="${sessionScope.email != null ? sessionScope.email : 'Not Available'}" /></p>
+                <p><strong>Phone:</strong> <c:out value="${sessionScope.phone != null ? sessionScope.phone : 'Not Available'}" /></p>
             </div>
-            <div class="card-body">
-                <p class="lead">Welcome to your personal dashboard! Here you can manage your bookings, update your profile, and more.</p>
+        </div>
 
-                <!-- Profile Information -->
-                <div class="profile-section mb-4">
-                    <h4>Profile Information</h4>
-                    <div class="list-group">
-                        <div class="list-group-item">
-                            <strong>Full Name:</strong> <c:out value="${sessionScope.fullName != null ? sessionScope.fullName : 'Not Available'}" />
-                        </div>
-                        <div class="list-group-item">
-                            <strong>Email:</strong> <c:out value="${sessionScope.email != null ? sessionScope.email : 'Not Available'}" />
-                        </div>
-                        <div class="list-group-item">
-                            <strong>Phone:</strong> <c:out value="${sessionScope.phone != null ? sessionScope.phone : 'Not Available'}" />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Booking Information -->
-                <div class="bookings-section">
-                    <h4>Booking Information</h4>
-                    <div class="alert alert-info">
-                        <strong>Upcoming Bookings:</strong> <c:out value="${sessionScope.upcomingBookingsCount != null ? sessionScope.upcomingBookingsCount : 0}" /> bookings.
-                    </div>
-                </div>
+        <!-- Booking Information -->
+        <div class="bookings-section">
+            <h4>Booking Information</h4>
+            <div class="bookings-card">
+                <p><strong>Upcoming Bookings:</strong> <c:out value="${sessionScope.upcomingBookingsCount != null ? sessionScope.upcomingBookingsCount : 0}" /> bookings.</p>
             </div>
         </div>
     </div>
 
+
+
     <!-- Footer -->
-    <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+    <footer class="footer">
         <div class="container">
             <span>&copy; 2023 Mega City Cab. All rights reserved.</span>
         </div>

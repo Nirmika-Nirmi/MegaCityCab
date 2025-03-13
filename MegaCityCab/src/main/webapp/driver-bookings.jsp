@@ -6,13 +6,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assigned Rides</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .header { text-align: center; margin-bottom: 20px; }
-        .ride-item { border: 1px solid #ddd; border-radius: 5px; padding: 15px; margin-bottom: 10px; }
-        .btn { margin-right: 10px; }
+        /* ======= General Styles ======= */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* ======= Container ======= */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ======= Header ======= */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        /* ======= Card Styles ======= */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 15px;
+        }
+
+        .card-header h3 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* ======= Ride Item Styles ======= */
+        .ride-item {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ride-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .ride-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .ride-item p strong {
+            color: #444;
+        }
+
+        /* ======= Button Styles ======= */
+        .btn {
+            margin-right: 10px;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #218838);
+            border: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ======= Responsive Design ======= */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card-header h3 {
+                font-size: 20px;
+            }
+
+            .ride-item p {
+                font-size: 13px;
+            }
+
+            .btn {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -95,6 +226,7 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
