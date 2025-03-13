@@ -128,7 +128,41 @@ public class BillingDAO {
         return paymentHistory;
     }
     
-    
+    public List<Billing> getAllBillingDetails() {
+        List<Billing> billingList = new ArrayList<>();
+        String query = "SELECT * FROM billing ORDER BY bill_date DESC";
 
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Billing billing = new Billing();
+                billing.setBillId(rs.getInt("bill_id"));
+                billing.setBookingId(rs.getInt("booking_id"));
+                billing.setCustomerId(rs.getInt("customer_id"));
+                billing.setDriverId(rs.getInt("driver_id"));
+                billing.setBillNumber(rs.getString("bill_number"));
+                billing.setCustomerName(rs.getString("customer_name"));
+                billing.setCustomerPhone(rs.getString("customer_phone"));
+                billing.setDriverName(rs.getString("driver_name"));
+                billing.setDriverPhone(rs.getString("driver_phone"));
+                billing.setPickupLocation(rs.getString("pickup_location"));
+                billing.setDropLocation(rs.getString("drop_location"));
+                billing.setDistance(rs.getDouble("distance"));
+                billing.setStartingMeter(rs.getDouble("starting_meter"));
+                billing.setEndingMeter(rs.getDouble("ending_meter"));
+                billing.setFinalAmount(rs.getDouble("final_amount"));
+                billing.setPaymentMethod(rs.getString("payment_method"));
+                billing.setPaymentStatus(rs.getString("payment_status"));
+                billing.setBillDate(rs.getTimestamp("bill_date"));
+
+                billingList.add(billing);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return billingList;
+    }
     
 }

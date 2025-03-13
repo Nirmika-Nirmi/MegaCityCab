@@ -358,6 +358,16 @@ public class DriverDAO {
     }
     
 
+    public void updateDriverAverageRating(int driverId) {
+        String query = "UPDATE drivers SET average_rating = (SELECT AVG(rating) FROM driver_feedback WHERE driver_id = ?) WHERE driver_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, driverId);
+            stmt.setInt(2, driverId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
     public String getDriverEmailById(int driverId) {
         String query = "SELECT email FROM drivers WHERE driver_id = ?";

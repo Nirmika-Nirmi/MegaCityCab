@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="Bean.Booking, java.util.List" %>
+<%@ page import="Bean.Billing, java.util.List" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Booking and Payment History</title>
+    <title>Admin - Billing History</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -70,30 +70,6 @@
             border: 1px solid #dee2e6;
         }
 
-        /* ======= Status Badges ======= */
-        .status-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-
-        .status-badge.completed {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .status-badge.pending {
-            background-color: #ffc107;
-            color: black;
-        }
-
-        .status-badge.cancelled {
-            background-color: #dc3545;
-            color: white;
-        }
-
         /* ======= Payment Status Badges ======= */
         .payment-badge {
             padding: 6px 12px;
@@ -111,6 +87,11 @@
         .payment-badge.unpaid {
             background-color: #dc3545;
             color: white;
+        }
+
+        .payment-badge.pending {
+            background-color: #ffc107;
+            color: black;
         }
 
         /* ======= No Data Message ======= */
@@ -137,81 +118,71 @@
 </head>
 <body>
     <div class="container">
-        <h1>Booking and Payment History</h1>
+        <h1>Billing History</h1>
 
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th>Bill ID</th>
                     <th>Booking ID</th>
-                    <th>Customer ID</th>
-                    <th>Driver ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Phone</th>
+                    <th>Driver Name</th>
+                    <th>Driver Phone</th>
                     <th>Pickup Location</th>
                     <th>Drop Location</th>
-                    <th>Booking Date</th>
-                    <th>Status</th>
-                    <th>Fare</th>
+                    <th>Distance (KM)</th>
+                    <th>Starting Meter</th>
+                    <th>Ending Meter</th>
+                    <th>Final Amount</th>
+                    <th>Payment Method</th>
                     <th>Payment Status</th>
-                    <th>Payment Date</th>
+                    <th>Bill Date</th>
                 </tr>
             </thead>
-            <tbody>
-                <%
-                    List<Booking> bookings = (List<Booking>) request.getAttribute("bookings");
-                    if (bookings != null && !bookings.isEmpty()) {
-                        for (Booking booking : bookings) {
-                            String statusClass = "";
-                            String paymentClass = "";
+<%
+    List<Billing> billingList = (List<Billing>) request.getAttribute("billingList");
+    if (billingList == null) {
+        System.out.println("Billing list is null.");
+    } else if (billingList.isEmpty()) {
+        System.out.println("Billing list is empty.");
+    }
 
-                            // Set status badge class
-                            switch (booking.getStatus().toLowerCase()) {
-                                case "completed":
-                                    statusClass = "completed";
-                                    break;
-                                case "pending":
-                                    statusClass = "pending";
-                                    break;
-                                case "cancelled":
-                                    statusClass = "cancelled";
-                                    break;
-                            }
-
-                            // Set payment badge class
-                            switch (booking.getBilling().getPaymentStatus().toLowerCase()) {
-                                case "paid":
-                                    paymentClass = "paid";
-                                    break;
-                                case "unpaid":
-                                    paymentClass = "unpaid";
-                                    break;
-                            }
-                %>
-                            <tr>
-                                <td><%= booking.getBookingId() %></td>
-                                <td><%= booking.getCustomerId() %></td>
-                                <td><%= booking.getDriverId() %></td>
-                                <td><%= booking.getPickupLocation() %></td>
-                                <td><%= booking.getDropLocation() %></td>
-                                <td><%= booking.getBookingDate() %></td>
-                                <td>
-                                    <span class="status-badge <%= statusClass %>"><%= booking.getStatus() %></span>
-                                </td>
-                                <td>$<%= booking.getFare() %></td>
-                                <td>
-                                    <span class="payment-badge <%= paymentClass %>"><%= booking.getBilling().getPaymentStatus() %></span>
-                                </td>
-                                <td><%= booking.getBilling().getBillDate() %></td>
-                            </tr>
-                <%
-                        }
-                    } else {
-                %>
-                        <tr>
-                            <td colspan="10" class="no-data">No bookings found.</td>
-                        </tr>
-                <%
-                    }
-                %>
-            </tbody>
+    if (billingList != null && !billingList.isEmpty()) {
+        for (Billing billing : billingList) {
+            String paymentClass = billing.getPaymentStatus().toLowerCase();
+%>
+            <tr>
+                <td><%= billing.getBillId() %></td>
+                <td><%= billing.getBookingId() %></td>
+                <td><%= billing.getCustomerName() %></td>
+                <td><%= billing.getCustomerPhone() %></td>
+                <td><%= billing.getDriverName() %></td>
+                <td><%= billing.getDriverPhone() %></td>
+                <td><%= billing.getPickupLocation() %></td>
+                <td><%= billing.getDropLocation() %></td>
+                <td><%= billing.getDistance() %></td>
+                <td><%= billing.getStartingMeter() %></td>
+                <td><%= billing.getEndingMeter() %></td>
+                <td>$<%= billing.getFinalAmount() %></td>
+                <td><%= billing.getPaymentMethod() %></td>
+                <td>
+                    <span class="payment-badge <%= paymentClass %>">
+                        <%= billing.getPaymentStatus() %>
+                    </span>
+                </td>
+                <td><%= billing.getBillDate() %></td>
+            </tr>
+<%
+        }
+    } else {
+%>
+        <tr>
+            <td colspan="15" class="no-data">No billing records found.</td>
+        </tr>
+<%
+    }
+%>
         </table>
     </div>
 
