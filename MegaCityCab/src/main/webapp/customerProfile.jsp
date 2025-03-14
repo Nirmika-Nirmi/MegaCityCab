@@ -177,6 +177,7 @@
         <a href="submitFeedback.jsp"><i class="fas fa-comments"></i> Feedback</a>
         <a href="customerProfile.jsp"><i class="fas fa-user-edit"></i> Profile</a>
         <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        
     </nav>
 
     <!-- Form Container -->

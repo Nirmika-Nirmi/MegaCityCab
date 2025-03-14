@@ -149,6 +149,7 @@
         <!-- Form to edit driver profile -->
         <form action="DriverServlet" method="post">
             <input type="hidden" name="driverId" value="${driver.driverId}">
+            
 
             <!-- Full Name -->
             <div class="input-group">
