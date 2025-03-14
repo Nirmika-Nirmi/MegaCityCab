@@ -112,9 +112,41 @@
 </head>
 <body>
 
+    <!-- Header -->
+    <header>
+        <h1>Edit My Profile (Driver)</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="driver-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="driver-bookings.jsp"><i class="fas fa-calendar-alt"></i> View All Rides</a>
+        <a href="DriverEarningsHistory.jsp"><i class="fas fa-dollar-sign"></i> Earnings History</a>
+        <a href="driverEditProfile.jsp"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+
+    <!-- Debugging Statements -->
+    <%
+        Driver driver = (Driver) request.getAttribute("driver");
+        if (driver == null) {
+            out.println("<div class='error-message'>Driver object is null!</div>");
+        } else {
+            out.println("<div class='success-message'>Driver Name: " + driver.getFullName() + "</div>");
+        }
+    %>
+
     <!-- Form Container -->
     <div class="form-container">
-        <h1>Edit Driver</h1>
+        <!-- Display error message if update fails -->
+        <% 
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            if (errorMessage != null) {
+        %>
+            <div class="error-message"><%= errorMessage %></div>
+        <% } %>
+
+        <!-- Form to edit driver profile -->
         <form action="DriverServlet" method="post">
             <input type="hidden" name="driverId" value="${driver.driverId}">
 
@@ -148,14 +180,14 @@
                 <input type="text" id="licenseNumber" name="licenseNumber" value="${driver.licenseNumber}" required>
             </div>
 
-            <!-- Status -->
+            <!-- Status (Read-Only for Driver) -->
             <div class="input-group">
                 <label for="status">Status</label>
-                <input type="text" id="status" name="status" value="${driver.status}" required>
+                <input type="text" id="status" name="status" value="${driver.status}" readonly>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn">Update Driver</button>
+            <button type="submit" class="btn">Update Profile</button>
         </form>
     </div>
 

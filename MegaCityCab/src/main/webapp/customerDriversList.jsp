@@ -164,11 +164,13 @@
 
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <a href="customerDashboard.jsp">Dashboard</a>
-        <a href="view-bookings.jsp">View Bookings</a>
-        <a href="customerDriversList.jsp" class="active">Driver List</a>
-        <a href="edit-profile.jsp">Edit Profile</a>
-        <a href="#" onclick="confirmLogout()">Logout</a>
+        <a href="customer-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="viewBookings.jsp"><i class="fas fa-calendar-alt"></i> View Bookings</a>
+        <a href="customerDriversList.jsp"><i class="fas fa-users"></i> Driver List</a>
+        <a href="PaymentHistoryServlet"><i class="fas fa-history"></i> Payment History</a>
+        <a href="submitFeedback.jsp"><i class="fas fa-comments"></i> Feedback</a>
+        <a href="customerProfile.jsp"><i class="fas fa-user-edit"></i> Profile</a>
+        <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
     <!-- Driver List -->

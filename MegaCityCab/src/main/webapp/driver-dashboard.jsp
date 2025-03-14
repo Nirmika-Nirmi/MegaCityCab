@@ -8,283 +8,357 @@
     <title>Driver Dashboard</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
-        /* ======= General Styles ======= */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+/* ======= General Styles ======= */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ef);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 
-        /* ======= Navbar ======= */
-        .navbar {
-            background: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+/* ======= Header ======= */
+header {
+    background: linear-gradient(135deg, #4a90e2, #764ba2);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        .navbar-brand {
-            font-size: 24px;
-            font-weight: 600;
-            color: #667eea !important;
-        }
+header h1 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
 
-        .navbar-nav .nav-link {
-            color: #555 !important;
-            padding: 10px 20px;
-            margin: 0 5px;
-            font-weight: 500;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
+/* ======= Navigation Bar ======= */
+nav {
+    background: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .navbar-nav .nav-link:hover {
-            background: #667eea;
-            color: white !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-        }
+nav a {
+    color: #555;
+    padding: 12px 20px;
+    margin: 0 5px;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
 
-        .navbar-nav .nav-link.active {
-            background: #667eea;
-            color: white !important;
-        }
+nav a:hover {
+    background: #4a90e2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
 
-        /* ======= Container ======= */
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+/* ======= Main Container ======= */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-        /* ======= Header ======= */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* ======= Welcome Section ======= */
+.welcome {
+    text-align: center;
+    padding: 25px;
+    background: linear-gradient(135deg, #f4f7fa, #e8eef7);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
 
-        .header h1 {
-            font-size: 28px;
-            font-weight: 600;
-            color: #444;
-        }
+.welcome p {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #444;
+}
 
-        /* ======= Card Styles ======= */
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
+.welcome p:first-child {
+    font-size: 26px;
+    font-weight: 600;
+    color: #4a90e2;
+}
 
-        .card-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 10px 10px 0 0;
-            padding: 15px;
-        }
+/* ======= Quick Stats Cards ======= */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
 
-        .card-header h3 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 500;
-        }
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
 
-        .card-body {
-            padding: 20px;
-        }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
 
-        /* ======= Driver Details ======= */
-        .driver-details p {
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #555;
-        }
+.card i {
+    font-size: 40px;
+    color: #4a90e2;
+    margin-bottom: 12px;
+}
 
-        .driver-details p strong {
-            color: #444;
-        }
+.card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
 
-        /* ======= Earnings Summary ======= */
-        .earnings-summary {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
+.card p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+}
 
-        .earnings-summary p {
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: #555;
-        }
+/* ======= Recent Rides Table ======= */
+.recent-rides {
+    margin-top: 30px;
+}
 
-        .earnings-summary p strong {
-            color: #444;
-        }
+.recent-rides h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
 
-        /* ======= Footer ======= */
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            background: #2c3e50;
-            color: white;
-            border-radius: 5px;
-        }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-        /* ======= Responsive Design ======= */
-        @media (max-width: 768px) {
-            .navbar-nav .nav-link {
-                margin: 5px 0;
-                width: 100%;
-                text-align: center;
-            }
+.table th, .table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-            .container {
-                margin: 10px;
-                padding: 15px;
-            }
+.table th {
+    background: linear-gradient(135deg, #4a90e2, #764ba2);
+    color: white;
+    font-weight: 500;
+}
 
-            .header h1 {
-                font-size: 24px;
-            }
+.table tbody tr:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
 
-            .card-header h3 {
-                font-size: 20px;
-            }
-        }
-    </style>
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* ======= Footer ======= */
+footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 14px;
+    border-radius: 0 0 12px 12px;
+}
+
+footer a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* ======= Responsive Design ======= */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        margin: 5px 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .container {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .welcome p {
+        font-size: 16px;
+    }
+
+    .welcome p:first-child {
+        font-size: 22px;
+    }
+
+    .card-container {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Mega City Cab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="driverDashboard.jsp">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="driver-bookings.jsp">View All Rides</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="DriverEarningsHistory.jsp">Earnings History</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="driverProfile.jsp">Edit Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="logout.jsp">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <!-- Header -->
+    <header>
+        <h1>Driver Dashboard</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="driver-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="driver-bookings.jsp"><i class="fas fa-calendar-alt"></i> View All Rides</a>
+        <a href="DriverEarningsHistory.jsp"><i class="fas fa-dollar-sign"></i> Earnings History</a>
+        <a href="driverEditProfile.jsp"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>Driver Dashboard</h1>
+        <!-- Welcome Section -->
+        <div class="welcome">
+            <%
+                // Retrieve driver ID from session
+                Integer driverId = (Integer) session.getAttribute("driverId");
+                if (driverId == null) {
+                    response.sendRedirect("driverLogin.jsp"); // Redirect to login if session is invalid
+                    return;
+                }
+
+                // Fetch driver details
+                DriverDAO driverDAO = new DriverDAO();
+                Driver driver = driverDAO.getDriverById(driverId);
+
+                if (driver != null) {
+            %>
+                <p>Hello, <%= driver.getFullName() %>! Welcome back.</p>
+                <p>Today is: <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></p>
+            <%
+                } else {
+                    out.println("<p>Driver details not found.</p>");
+                }
+            %>
         </div>
 
-        <!-- Driver Details -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Driver Details</h3>
-            </div>
-            <div class="card-body driver-details">
-                <%
-                    // Retrieve driver ID from session
-                    Integer driverId = (Integer) session.getAttribute("driverId");
-                    if (driverId == null) {
-                        response.sendRedirect("driverLogin.jsp"); // Redirect to login if session is invalid
-                        return;
-                    }
-
-                    // Fetch driver details
-                    DriverDAO driverDAO = new DriverDAO();
-                    Driver driver = driverDAO.getDriverById(driverId);
-
-                    if (driver != null) {
-                %>
-                    <p><strong>Name:</strong> <%= driver.getFullName() %></p>
-                    <p><strong>Email:</strong> <%= driver.getEmail() %></p>
-                    <p><strong>Phone:</strong> <%= driver.getPhoneNumber() %></p>
-                    <p><strong>License Number:</strong> <%= driver.getLicenseNumber() %></p>
-                    <p><strong>Status:</strong> <%= driver.getStatus() %></p>
-                <%
-                    } else {
-                        out.println("<p>Driver details not found.</p>");
-                    }
-                %>
-            </div>
-        </div>
-
-        <!-- Car Details -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Car Details</h3>
-            </div>
-            <div class="card-body">
-                <%
-                    CarDao carDao = new CarDao();
-                    Car car = carDao.getCarByDriverId(driverId);
-
-                    if (car != null) {
-                %>
-                    <p><strong>Model:</strong> <%= car.getModel() %></p>
-                    <p><strong>Plate Number:</strong> <%= car.getPlateNumber() %></p>
-                    <p><strong>Capacity:</strong> <%= car.getCapacity() %></p>
-                    <p><strong>Fuel Type:</strong> <%= car.getFuelType() %></p>
-                    <p><strong>AC:</strong> <%= car.isAc() ? "Yes" : "No" %></p>
-                    <p><strong>GPS:</strong> <%= car.isGps() ? "Yes" : "No" %></p>
-                <%
-                    } else {
-                        out.println("<p>No car assigned.</p>");
-                    }
-                %>
-            </div>
-        </div>
-
-        <!-- Earnings Summary -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Earnings Summary</h3>
-            </div>
-            <div class="card-body earnings-summary">
+        <!-- Quick Stats Cards -->
+        <div class="card-container">
+            <div class="card">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Total Earnings</h3>
                 <%
                     BookingDAO bookingDAO = new BookingDAO();
                     double totalEarnings = bookingDAO.getTotalEarnings(driverId);
+                %>
+                <p>$<%= String.format("%.2f", totalEarnings) %></p>
+            </div>
+            <div class="card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Completed Rides</h3>
+                <%
                     int completedRides = bookingDAO.getCompletedRidesCount(driverId);
                 %>
-                <p><strong>Total Earnings:</strong> $<%= totalEarnings %></p>
-                <p><strong>Completed Rides:</strong> <%= completedRides %></p>
-                <p><a href="driverEarningsHistory.jsp" class="btn btn-primary">View Earnings History</a></p>
+                <p><%= completedRides %></p>
             </div>
+            <div class="card">
+                <i class="fas fa-clock"></i>
+                <h3>Pending Rides</h3>
+                <%
+                    int pendingRides = bookingDAO.getPendingRidesCount(driverId);
+                %>
+                <p><%= pendingRides %></p>
+            </div>
+        </div>
+
+        <!-- Recent Rides Section -->
+        <div class="recent-rides">
+            <h3>Recent Rides</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Pickup Location</th>
+                        <th>Drop Location</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        List<Booking> recentRides = bookingDAO.getRecentRides(driverId);
+                        if (recentRides != null && !recentRides.isEmpty()) {
+                            for (Booking ride : recentRides) {
+                    %>
+                        <tr>
+                            <td><%= ride.getCustomerId() %></td>
+                            <td><%= ride.getPickupLocation() %></td>
+                            <td><%= ride.getDropLocation() %></td>
+                            <td>$<%= String.format("%.2f", ride.getFare()) %></td>
+                            <td><%= ride.getStatus() %></td>
+                        </tr>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <tr>
+                            <td colspan="5" class="text-center">No recent rides found.</td>
+                        </tr>
+                    <%
+                        }
+                    %>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <!-- Footer -->
-    <div class="footer">
-        &copy; 2023 Mega City Cab. All rights reserved.
-    </div>
+    <footer>
+        &copy; 2023 Mega City Cab. All rights reserved. | <a href="#">Privacy Policy</a>
+    </footer>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        function confirmLogout() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "logout.jsp";
+            }
+        }
+    </script>
 </body>
 </html>

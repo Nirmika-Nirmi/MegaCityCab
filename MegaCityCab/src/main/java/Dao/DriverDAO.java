@@ -209,6 +209,8 @@ public class DriverDAO {
         }
         return false;
     }
+    
+    
 
     public static boolean deleteDriver(int driverId) {
         try (Connection conn = DBConnection.getConnection();
@@ -368,6 +370,8 @@ public class DriverDAO {
             e.printStackTrace();
         }
     }
+    
+    
     
     public String getDriverEmailById(int driverId) {
         String query = "SELECT email FROM drivers WHERE driver_id = ?";

@@ -87,6 +87,24 @@ public class CustomerDAO {
     }
     
 
+    // Method to update customer profile
+    public boolean updateCustomer(CustomerBean customer) {
+        String query = "UPDATE customers SET full_name = ?, email = ?, phone = ?, address = ?, nic = ? WHERE customer_id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, customer.getFullName());
+            stmt.setString(2, customer.getEmail());
+            stmt.setString(3, customer.getPhoneNumber());
+            stmt.setString(4, customer.getAddress());
+            stmt.setString(5, customer.getNicNumber());
+            stmt.setInt(6, customer.getCustomerId());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
      // Fetch all customers from the database
         public List<CustomerBean> getAllCustomers() {
             List<CustomerBean> customers = new ArrayList<>();

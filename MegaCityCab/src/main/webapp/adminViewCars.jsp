@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="Bean.Admin" %>
-<%@ page import="Dao.CustomerDAO, Dao.DriverDAO, Dao.BookingDAO, Dao.BillingDAO" %>
+<%@ page import="java.util.List, Bean.Car" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Admin - View Cars</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
         /* ======= General Styles ======= */
         body {
@@ -70,66 +74,44 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* ======= Welcome Section ======= */
-        .welcome {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-        }
-
-        .welcome p {
-            margin: 10px 0;
-            font-size: 18px;
-            color: #444;
-        }
-
-        .welcome p:first-child {
-            font-size: 24px;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        /* ======= Quick Stats Cards ======= */
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        /* ======= Table Styles ======= */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
-        }
-
-        .card {
             background: white;
-            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .table th, .table td {
+            padding: 12px;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-bottom: 1px solid #ddd;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        .table th {
+            font-weight: 500;
         }
 
-        .card i {
-            font-size: 32px;
-            color: #667eea;
-            margin-bottom: 10px;
+        .table tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
         }
 
-        .card h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #444;
-            margin: 10px 0;
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
-        .card p {
-            font-size: 16px;
+        .no-data {
+            text-align: center;
             color: #777;
+            padding: 20px;
         }
 
         /* ======= Footer ======= */
@@ -140,9 +122,6 @@
             padding: 15px;
             margin-top: 30px;
             font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }
 
         footer a {
@@ -172,16 +151,8 @@
                 padding: 15px;
             }
 
-            .welcome p {
-                font-size: 16px;
-            }
-
-            .welcome p:first-child {
-                font-size: 20px;
-            }
-
-            .card-container {
-                grid-template-columns: 1fr;
+            .table th, .table td {
+                padding: 8px;
             }
         }
     </style>
@@ -190,7 +161,7 @@
 
     <!-- Header -->
     <header>
-        <h1>Admin Dashboard</h1>
+        <h1>Admin Dashboard - View Cars</h1>
     </header>
 
     <!-- Navigation Bar -->
@@ -207,41 +178,48 @@
 
     <!-- Main Content -->
     <div class="container">
- <% 
-            Admin admin = (Admin) session.getAttribute("admin");
-            if (admin != null) {
-        %>
-            <div class="welcome">
-                <p>Hello, <%= admin.getFullName() %>! Welcome back.</p>
-                <p>Today is: <%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %></p>
-            </div>
-        <% 
-            } 
-        %>
-
-        <!-- Quick Stats Cards -->
-        <div class="card-container">
-            <div class="card">
-                <i class="fas fa-users"></i>
-                <h3>Total Customers</h3>
-                <p><%= new CustomerDAO().getTotalCustomers() %></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-car"></i>
-                <h3>Total Drivers</h3>
-                <p><%= new DriverDAO().getTotalDrivers() %></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-calendar-check"></i>
-                <h3>Total Bookings</h3>
-                <p><%= new BookingDAO().getTotalBookings() %></p>
-            </div>
-            <div class="card">
-                <i class="fas fa-dollar-sign"></i>
-                <h3>Total Revenue</h3>
-                <p>$<%= String.format("%.2f", new BillingDAO().getTotalRevenue()) %></p>
-            </div>
-        </div>
+        <h2>Car List</h2>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Car ID</th>
+                    <th>Model</th>
+                    <th>Plate Number</th>
+                    <th>Capacity</th>
+                    <th>Fuel Type</th>
+                    <th>AC</th>
+                    <th>GPS</th>
+                    <th>Driver ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    List<Car> cars = (List<Car>) request.getAttribute("cars");
+                    if (cars != null && !cars.isEmpty()) {
+                        for (Car car : cars) {
+                %>
+                    <tr>
+                        <td><%= car.getCarId() %></td>
+                        <td><%= car.getModel() %></td>
+                        <td><%= car.getPlateNumber() %></td>
+                        <td><%= car.getCapacity() %></td>
+                        <td><%= car.getFuelType() %></td>
+                        <td><%= car.isAc() ? "Yes" : "No" %></td>
+                        <td><%= car.isGps() ? "Yes" : "No" %></td>
+                        <td><%= car.getDriverId() %></td>
+                    </tr>
+                <%
+                        }
+                    } else {
+                %>
+                    <tr>
+                        <td colspan="8" class="no-data">No cars found.</td>
+                    </tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
     </div>
 
     <!-- Footer -->
@@ -249,5 +227,7 @@
         &copy; 2023 Admin Dashboard. All rights reserved. | <a href="#">Privacy Policy</a>
     </footer>
 
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

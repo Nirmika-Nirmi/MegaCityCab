@@ -1,6 +1,8 @@
 package Servlet;
 
 import java.io.IOException;
+import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -102,5 +104,18 @@ public class DriverRegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("driverRegister.jsp").forward(request, response);
             }
         }
+    }
+    
+    
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Fetch all cars from the database
+        CarDao carDao = new CarDao();
+        List<Car> cars = carDao.getAllCars();
+
+        // Set the cars list as a request attribute
+        request.setAttribute("cars", cars);
+
+        // Forward to the JSP page to display cars
+        request.getRequestDispatcher("adminViewCars.jsp").forward(request, response);
     }
 }

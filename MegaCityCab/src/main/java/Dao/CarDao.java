@@ -80,4 +80,29 @@ public class CarDao {
         }
         return false;
     }
+    
+    // Method to fetch all cars
+    public List<Car> getAllCars() {
+        List<Car> cars = new ArrayList<>();
+        String query = "SELECT * FROM cars";
+        try (PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Car car = new Car();
+                car.setCarId(rs.getInt("car_id"));
+                car.setModel(rs.getString("model"));
+                car.setPlateNumber(rs.getString("plate_number"));
+                car.setCapacity(rs.getInt("capacity"));
+                car.setFuelType(rs.getString("fuel_type"));
+                car.setAc(rs.getBoolean("ac"));
+                car.setGps(rs.getBoolean("gps"));
+                car.setDriverId(rs.getInt("driver_id"));
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cars;
+    }
 }

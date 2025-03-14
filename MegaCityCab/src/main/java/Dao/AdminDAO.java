@@ -1,5 +1,7 @@
 package Dao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,5 +36,55 @@ public class AdminDAO {
             e.printStackTrace();
         }
         return null; // Admin not found
+    }
+    
+    
+    
+ // Method to update admin profile
+    public boolean updateAdmin(Admin admin) {
+        String query;
+        if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+            // Update profile with password
+            query = "UPDATE admin SET full_name = ?, email = ?, password = ? WHERE admin_id = ?";
+        } else {
+            // Update profile without password
+            query = "UPDATE admin SET full_name = ?, email = ? WHERE admin_id = ?";
+        }
+
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, admin.getFullName());
+            stmt.setString(2, admin.getEmail());
+
+            if (admin.getPassword() != null && !admin.getPassword().isEmpty()) {
+                // Hash the password before storing it
+                String hashedPassword = hashPassword(admin.getPassword());
+                stmt.setString(3, hashedPassword);
+                stmt.setInt(4, admin.getAdminId());
+            } else {
+                stmt.setInt(3, admin.getAdminId());
+            }
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Method to hash the password (for security)
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

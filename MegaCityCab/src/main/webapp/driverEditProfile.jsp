@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="Bean.Driver" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Feedback</title>
+    <title>Edit My Profile (Driver)</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -63,9 +64,9 @@
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
-        /* ======= Container ======= */
-        .container {
-            max-width: 800px;
+        /* ======= Form Container ======= */
+        .form-container {
+            max-width: 500px;
             margin: 20px auto;
             padding: 20px;
             background: white;
@@ -73,36 +74,62 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* ======= Form Styles ======= */
-        .form-label {
-            font-weight: 500;
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
             color: #444;
         }
 
-        .form-control {
-            border-radius: 6px;
-            border: 1px solid #ddd;
+        /* ======= Input Group Styles ======= */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
             padding: 10px;
-            font-size: 14px;
-        }
-
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            border: 1px solid #ddd;
             border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        /* ======= Button Styles ======= */
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn-primary:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+            box-shadow: 0px 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ======= Error Message ======= */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
         }
 
         /* ======= Footer ======= */
@@ -137,7 +164,7 @@
                 text-align: center;
             }
 
-            .container {
+            .form-container {
                 margin: 10px;
                 padding: 15px;
             }
@@ -152,41 +179,70 @@
 
     <!-- Header -->
     <header>
-        <h1>Submit Feedback</h1>
+        <h1>Edit My Profile (Driver)</h1>
     </header>
 
     <!-- Navigation Bar -->
     <nav>
-        <a href="customer-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="viewBookings.jsp"><i class="fas fa-calendar-alt"></i> View Bookings</a>
-        <a href="customerDriversList.jsp"><i class="fas fa-users"></i> Driver List</a>
-        <a href="PaymentHistoryServlet"><i class="fas fa-history"></i> Payment History</a>
-        <a href="submitFeedback.jsp"><i class="fas fa-comments"></i> Feedback</a>
-        <a href="customerProfile.jsp"><i class="fas fa-user-edit"></i> Profile</a>
+        <a href="driver-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="driver-bookings.jsp"><i class="fas fa-calendar-alt"></i> View All Rides</a>
+        <a href="DriverEarningsHistory.jsp"><i class="fas fa-dollar-sign"></i> Earnings History</a>
+        <a href="driverEditProfile.jsp"><i class="fas fa-user-edit"></i> Edit Profile</a>
         <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container">
-        <form action="FeedbackServlet" method="post">
-            <input type="hidden" name="bookingId" value="${param.bookingId}">
-            <input type="hidden" name="driverId" value="${param.driverId}">
-            <input type="hidden" name="customerId" value="${sessionScope.customerId}">
+    <!-- Form Container -->
+    <div class="form-container">
+        <!-- Display error message if update fails -->
+        <% 
+            String errorMessage = (String) request.getAttribute("errorMessage");
+            if (errorMessage != null) {
+        %>
+            <div class="error-message"><%= errorMessage %></div>
+        <% } %>
 
-            <!-- Rating -->
-            <div class="mb-3">
-                <label for="rating" class="form-label">Rating (1-5)</label>
-                <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" step="0.1" required>
+        <!-- Form to edit driver profile -->
+        <form action="DriverServlet" method="post">
+            <input type="hidden" name="driverId" value="${driver.driverId}">
+
+            <!-- Full Name -->
+            <div class="input-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" value="${driver.fullName}" required>
             </div>
 
-            <!-- Comments -->
-            <div class="mb-3">
-                <label for="comments" class="form-label">Comments</label>
-                <textarea class="form-control" id="comments" name="comments" rows="3" required></textarea>
+            <!-- Email -->
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="${driver.email}" required>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="input-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" value="${driver.phoneNumber}" required>
+            </div>
+
+            <!-- Address -->
+            <div class="input-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" value="${driver.address}" required>
+            </div>
+
+            <!-- License Number -->
+            <div class="input-group">
+                <label for="licenseNumber">License Number</label>
+                <input type="text" id="licenseNumber" name="licenseNumber" value="${driver.licenseNumber}" required>
+            </div>
+
+            <!-- Status (Read-Only for Driver) -->
+            <div class="input-group">
+                <label for="status">Status</label>
+                <input type="text" id="status" name="status" value="${driver.status}" readonly>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Submit Feedback</button>
+            <button type="submit" class="btn">Update Profile</button>
         </form>
     </div>
 

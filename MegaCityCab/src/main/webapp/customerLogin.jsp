@@ -127,6 +127,18 @@
         .register-link a:hover {
             text-decoration: underline;
         }
+        
+         .input-group .fa-envelope {
+            right: 10px; 
+            bottom:60px;
+            color: #667eea;
+        }
+
+        .input-group .fa-lock {
+            right: 10px;
+            bottum:60px; 
+            color: #667eea;
+        }
 
         /* ======= Responsive Design ======= */
         @media (max-width: 480px) {

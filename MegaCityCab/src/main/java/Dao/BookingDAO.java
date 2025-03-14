@@ -182,7 +182,45 @@ public class BookingDAO {
     
 
 
-   
+ // Method to get the count of pending rides for a driver
+    public int getPendingRidesCount(int driverId) {
+        String query = "SELECT COUNT(*) FROM bookings WHERE driver_id = ? AND status = 'Pending'";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, driverId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Method to get recent rides for a driver
+    public List<Booking> getRecentRides(int driverId) {
+        List<Booking> rides = new ArrayList<>();
+        String query = "SELECT b.*, c.full_name AS customer_name FROM bookings b " +
+                       "JOIN customers c ON b.customer_id = c.customer_id " +
+                       "WHERE b.driver_id = ? ORDER BY b.booking_date DESC LIMIT 5";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, driverId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setCustomerId(rs.getInt("customer_id"));
+                booking.setPickupLocation(rs.getString("pickup_location"));
+                booking.setDropLocation(rs.getString("drop_location"));
+                booking.setFare(rs.getDouble("fare"));
+                booking.setStatus(rs.getString("status"));
+                rides.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rides;
+    }
     
 
     public Booking getBookingById(int bookingId) {

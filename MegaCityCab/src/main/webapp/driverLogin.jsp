@@ -110,6 +110,17 @@
             color: #555;
         }
 
+ .input-group .fa-envelope {
+            right: 10px; 
+            bottom:60px;
+            color: #667eea;
+        }
+
+        .input-group .fa-lock {
+            right: 10px;
+            bottum:60px; 
+            color: #667eea;
+        }
         .register-link a {
             color: #667eea;
             text-decoration: none;
