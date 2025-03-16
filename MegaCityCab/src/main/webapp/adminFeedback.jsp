@@ -10,6 +10,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         /* ======= General Styles ======= */
@@ -66,16 +68,28 @@
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
-        /* ======= Table Styles ======= */
+        /* ======= Main Content ======= */
         .container {
-            margin-top: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             flex: 1; /* Allow the container to grow and take up remaining space */
         }
 
+        .container h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        /* ======= Table Styles ======= */
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -88,34 +102,31 @@
         }
 
         .table th {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             font-weight: 600;
         }
 
         .table tr:hover {
-            background: #f5f5f5;
+            background: rgba(102, 126, 234, 0.05);
         }
 
         /* ======= Footer ======= */
-        .footer {
+        footer {
             background: #2c3e50;
             color: white;
             text-align: center;
             padding: 15px;
+            margin-top: 30px;
             font-size: 14px;
-            position: fixed; /* Fix the footer at the bottom */
-            left: 0;
-            bottom: 0;
-            width: 100%;
         }
 
-        .footer a {
+        footer a {
             color: #667eea;
             text-decoration: none;
         }
 
-        .footer a:hover {
+        footer a:hover {
             text-decoration: underline;
         }
 
@@ -155,16 +166,17 @@
         <a href="admin-dashboard.jsp"><i class="fas fa-home"></i> Home</a>
         <a href="viewDrivers.jsp"><i class="fas fa-users"></i> View Drivers</a>
         <a href="viewCustomers.jsp"><i class="fas fa-user-friends"></i> View Customers</a>
-        <a href="adminBookingHistory.jsp"><i class="fas fa-calendar-alt"></i> Manage Bookings</a>
-        <a href="adminViewCars.jsp"><i class="fas fa-car"></i> Manage Cars</a>
+        <a href="AdminBookingHistoryServlet"><i class="fas fa-calendar-alt"></i> Manage Bookings</a>
+        <a href="AdminViewCarsServlet"><i class="fas fa-car"></i> Manage Cars</a>
         <a href="adminFeedback.jsp"><i class="fas fa-comments"></i> Reports</a>
         <a href="adminProfile.jsp"><i class="fas fa-user-cog"></i> Profile</a>
+        <a href="logout.jsp" style="color: #ff4444;"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
         <h2>Driver Feedback</h2>
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Feedback ID</th>
@@ -200,10 +212,8 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <span>&copy; 2023 Mega City Cab. All rights reserved.</span>
-        </div>
+    <footer>
+        &copy; 2023 Admin Dashboard. All rights reserved. | <a href="#">Privacy Policy</a>
     </footer>
 
     <!-- Bootstrap JS and Popper.js -->

@@ -60,6 +60,10 @@
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
         }
 
+        nav a i {
+            margin-right: 8px;
+        }
+
         /* ======= Main Container ======= */
         .container {
             max-width: 1200px;
@@ -140,9 +144,6 @@
             padding: 15px;
             margin-top: 30px;
             font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
         }
 
         footer a {
@@ -198,8 +199,8 @@
         <a href="admin-dashboard.jsp"><i class="fas fa-home"></i> Home</a>
         <a href="viewDrivers.jsp"><i class="fas fa-users"></i> View Drivers</a>
         <a href="viewCustomers.jsp"><i class="fas fa-user-friends"></i> View Customers</a>
-        <a href="adminBookingHistory.jsp"><i class="fas fa-calendar-check"></i> Manage Bookings</a>
-        <a href="adminViewCars.jsp"><i class="fas fa-car"></i> Manage Cars</a>
+        <a href="AdminBookingHistoryServlet"><i class="fas fa-calendar-alt"></i> Manage Bookings</a>
+        <a href="AdminViewCarsServlet"><i class="fas fa-car"></i> Manage Cars</a>
         <a href="adminFeedback.jsp"><i class="fas fa-comments"></i> Reports</a>
         <a href="adminProfile.jsp"><i class="fas fa-user-cog"></i> Profile</a>
         <a href="logout.jsp" style="color: #ff4444;"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -207,7 +208,7 @@
 
     <!-- Main Content -->
     <div class="container">
- <% 
+        <% 
             Admin admin = (Admin) session.getAttribute("admin");
             if (admin != null) {
         %>

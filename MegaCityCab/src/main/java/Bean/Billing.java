@@ -5,8 +5,8 @@ import java.sql.Timestamp;
 public class Billing {
     private int billId;
     private int bookingId;
-    private int customerId; // Added
-    private int driverId;   // Added
+    private int customerId; 
+    private int driverId;   
     private String billNumber;
     private String customerName;
     private String customerPhone;

@@ -19,7 +19,8 @@ public class CustomerProfileServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
         String nicNumber = request.getParameter("nicNumber");
-        String password = request.getParameter("password"); // Retrieve password
+        String currentPassword = request.getParameter("currentPassword");
+        String newPassword = request.getParameter("newPassword");
 
         // Create a CustomerBean object
         CustomerBean customer = new CustomerBean();
@@ -29,18 +30,18 @@ public class CustomerProfileServlet extends HttpServlet {
         customer.setPhoneNumber(phoneNumber);
         customer.setAddress(address);
         customer.setNicNumber(nicNumber);
-        customer.setPassword(password); // Set password
 
         // Update the customer's profile in the database
         CustomerDAO customerDAO = new CustomerDAO();
-        boolean isUpdated = customerDAO.updateCustomer(customer);
+        boolean isUpdated = customerDAO.updateCustomer(customer, currentPassword, newPassword);
 
         if (isUpdated) {
-            // Redirect to the customer dashboard with a success message
-            response.sendRedirect("customer-dashboard.jsp?message=Profile+Updated+Successfully");
+            // Redirect to the customer profile page with a success message
+            response.sendRedirect("editCustomerProfile.jsp?message=Profile+Updated+Successfully");
         } else {
             // Redirect back to the edit profile page with an error message
-            response.sendRedirect("customerProfile.jsp?error=Failed+to+Update+Profile");
+            request.setAttribute("errorMessage", "Failed to update profile. Please check your current password.");
+            request.getRequestDispatcher("editCustomerProfile.jsp").forward(request, response);
         }
     }
 }

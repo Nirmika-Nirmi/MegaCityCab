@@ -87,18 +87,54 @@ public class CustomerDAO {
     }
     
 
-    // Method to update customer profile
-    public boolean updateCustomer(CustomerBean customer) {
-        String query = "UPDATE customers SET full_name = ?, email = ?, phone = ?, address = ?, nic = ? WHERE customer_id = ?";
+
+    public CustomerBean getCustomerById(int customerId) {
+        String query = "SELECT * FROM customers WHERE customer_id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, customerId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                CustomerBean customer = new CustomerBean();
+                customer.setCustomerId(rs.getInt("customer_id"));
+                customer.setFullName(rs.getString("full_name"));
+                customer.setEmail(rs.getString("email"));
+                customer.setPhoneNumber(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setNicNumber(rs.getString("nic"));
+                customer.setPassword(rs.getString("password"));
+                return customer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    // Method to update customer profile
+    public boolean updateCustomer(CustomerBean customer, String currentPassword, String newPassword) {
+        String query = "UPDATE customers SET full_name = ?, email = ?, phone = ?, address = ?, nic = ? WHERE customer_id = ? AND password = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, customer.getFullName());
             stmt.setString(2, customer.getEmail());
             stmt.setString(3, customer.getPhoneNumber());
             stmt.setString(4, customer.getAddress());
             stmt.setString(5, customer.getNicNumber());
             stmt.setInt(6, customer.getCustomerId());
+            stmt.setString(7, currentPassword);
 
             int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0 && newPassword != null && !newPassword.isEmpty()) {
+                // Update password if new password is provided
+                String updatePasswordQuery = "UPDATE customers SET password = ? WHERE customer_id = ?";
+                try (PreparedStatement passwordStmt = conn.prepareStatement(updatePasswordQuery)) {
+                    passwordStmt.setString(1, newPassword);
+                    passwordStmt.setInt(2, customer.getCustomerId());
+                    passwordStmt.executeUpdate();
+                }
+            }
+
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();

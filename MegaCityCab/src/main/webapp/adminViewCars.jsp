@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, Bean.Car" %>
+<%@ page import="java.util.List, Bean.Car, Dao.DBConnection, java.sql.Connection, java.sql.SQLException" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - View Cars</title>
+    <title>Manage Cars</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -17,9 +17,9 @@
         /* ======= General Styles ======= */
         body {
             font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f4f7fa, #e8eef7);
             margin: 0;
             padding: 0;
-            background-color: #f4f7fa;
             color: #333;
         }
 
@@ -74,6 +74,13 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .container h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
         /* ======= Table Styles ======= */
         .table {
             width: 100%;
@@ -98,6 +105,8 @@
 
         .table th {
             font-weight: 500;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            text-color:white;
         }
 
         .table tbody tr:hover {
@@ -108,13 +117,22 @@
             background-color: #f9f9f9;
         }
 
+        /* ======= No Data Message ======= */
         .no-data {
             text-align: center;
             color: #777;
             padding: 20px;
         }
 
-        /* ======= Footer ======= */
+        /* ======= Debugging Information ======= */
+        .debug-info {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
         footer {
             background: #2c3e50;
             color: white;
@@ -169,8 +187,8 @@
         <a href="admin-dashboard.jsp"><i class="fas fa-home"></i> Home</a>
         <a href="viewDrivers.jsp"><i class="fas fa-users"></i> View Drivers</a>
         <a href="viewCustomers.jsp"><i class="fas fa-user-friends"></i> View Customers</a>
-        <a href="adminBookingHistory.jsp"><i class="fas fa-calendar-check"></i> Manage Bookings</a>
-        <a href="adminViewCars.jsp"><i class="fas fa-car"></i> Manage Cars</a>
+        <a href="AdminBookingHistoryServlet"><i class="fas fa-calendar-alt"></i> Manage Bookings</a>
+        <a href="AdminViewCarsServlet"><i class="fas fa-car"></i> Manage Cars</a>
         <a href="adminFeedback.jsp"><i class="fas fa-comments"></i> Reports</a>
         <a href="adminProfile.jsp"><i class="fas fa-user-cog"></i> Profile</a>
         <a href="logout.jsp" style="color: #ff4444;"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -178,7 +196,18 @@
 
     <!-- Main Content -->
     <div class="container">
-        <h2>Car List</h2>
+        
+
+        <!-- Debugging Information -->
+        <div class="debug-info">
+            <%
+                // Declare the cars variable here
+                List<Car> cars = (List<Car>) request.getAttribute("cars");
+            %>
+            <p><strong>Number of Cars:</strong> <%= cars == null ? "null" : cars.size() %></p>
+        </div>
+
+        <!-- Car List Table -->
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -194,7 +223,6 @@
             </thead>
             <tbody>
                 <%
-                    List<Car> cars = (List<Car>) request.getAttribute("cars");
                     if (cars != null && !cars.isEmpty()) {
                         for (Car car : cars) {
                 %>

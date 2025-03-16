@@ -313,7 +313,7 @@
 
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <a href="customerDashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="customer-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
         <a href="viewBookings.jsp"><i class="fas fa-calendar-alt"></i> View Bookings</a>
         <a href="customerDriversList.jsp"><i class="fas fa-users"></i> Driver List</a>
         <a href="PaymentHistoryServlet"><i class="fas fa-history"></i> Payment History</a>

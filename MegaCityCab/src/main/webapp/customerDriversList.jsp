@@ -8,6 +8,8 @@
     <title>Driver List</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
@@ -56,7 +58,7 @@
         }
 
         .navbar a:hover {
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
@@ -90,8 +92,8 @@
         }
 
         .driver-list th {
-            background-color: #f8f9fa; /* Light gray background */
-            color: #333; /* Dark text color */
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
             font-weight: 600;
         }
 
@@ -166,7 +168,7 @@
     <nav class="navbar">
         <a href="customer-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
         <a href="viewBookings.jsp"><i class="fas fa-calendar-alt"></i> View Bookings</a>
-        <a href="customerDriversList.jsp"><i class="fas fa-users"></i> Driver List</a>
+        <a href="customerDriversList.jsp" class="active"><i class="fas fa-users"></i> Driver List</a>
         <a href="PaymentHistoryServlet"><i class="fas fa-history"></i> Payment History</a>
         <a href="submitFeedback.jsp"><i class="fas fa-comments"></i> Feedback</a>
         <a href="customerProfile.jsp"><i class="fas fa-user-edit"></i> Profile</a>

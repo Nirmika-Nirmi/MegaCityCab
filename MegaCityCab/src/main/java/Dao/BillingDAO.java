@@ -128,6 +128,8 @@ public class BillingDAO {
         return paymentHistory;
     }
     
+
+    // Method to fetch all billing records
     public List<Billing> getAllBillingDetails() {
         List<Billing> billingList = new ArrayList<>();
         String query = "SELECT * FROM billing ORDER BY bill_date DESC";
@@ -135,6 +137,8 @@ public class BillingDAO {
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
+
+            logger.info("Executing query: " + query);
 
             while (rs.next()) {
                 Billing billing = new Billing();
@@ -159,10 +163,12 @@ public class BillingDAO {
 
                 billingList.add(billing);
             }
+
+            logger.info("Retrieved " + billingList.size() + " billing records.");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "SQL Error in getAllBillingDetails: " + e.getMessage(), e);
         }
+
         return billingList;
     }
-    
 }

@@ -1,3 +1,4 @@
+
 package Servlet;
 
 import Dao.DriverDAO;
@@ -9,7 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/DriverServlet")
+@WebServlet("/DriverServlet") // Ensure this annotation is present
 public class DriverServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -24,16 +25,9 @@ public class DriverServlet extends HttpServlet {
             int driverId = Integer.parseInt(request.getParameter("driverId"));
             Driver driver = DriverDAO.getDriverById(driverId);
             request.setAttribute("driver", driver);
-
-            // Check if the request is from admin or driver
-            String role = request.getParameter("role");
-            if ("admin".equals(role)) {
-                request.getRequestDispatcher("EditDriver.jsp").forward(request, response);
-            } else if ("driver".equals(role)) {
-                request.getRequestDispatcher("driverEditProfile.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("EditDriver.jsp").forward(request, response);
         } else if ("delete".equals(action)) {
-            // Handle delete action (only for admin)
+            // Handle delete action
             int driverId = Integer.parseInt(request.getParameter("driverId"));
             boolean isDeleted = DriverDAO.deleteDriver(driverId);
             if (isDeleted) {
@@ -43,7 +37,7 @@ public class DriverServlet extends HttpServlet {
                 request.getRequestDispatcher("viewDrivers.jsp").forward(request, response);
             }
         } else {
-            // Default action: fetch and display all drivers (for admin)
+            // Default action: fetch and display all drivers
             List<Driver> driverList = new DriverDAO().getAllDrivers();
             request.setAttribute("driverList", driverList);
             request.getRequestDispatcher("viewDrivers.jsp").forward(request, response);
@@ -61,7 +55,6 @@ public class DriverServlet extends HttpServlet {
         String licenseNumber = request.getParameter("licenseNumber");
         String status = request.getParameter("status");
 
-        // Create a Driver object
         Driver driver = new Driver();
         driver.setDriverId(driverId);
         driver.setFullName(fullName);
@@ -71,24 +64,15 @@ public class DriverServlet extends HttpServlet {
         driver.setLicenseNumber(licenseNumber);
         driver.setStatus(status);
 
-        // Update the driver's profile
         boolean isUpdated = DriverDAO.updateDriver(driver);
 
-        // Check if the request is from admin or driver
-        String role = request.getParameter("role");
         if (isUpdated) {
-            if ("admin".equals(role)) {
-                response.sendRedirect("DriverServlet"); // Redirect to admin's driver list
-            } else if ("driver".equals(role)) {
-                response.sendRedirect("driverDashboard.jsp?message=Profile+Updated+Successfully"); // Redirect to driver's dashboard
-            }
+            response.sendRedirect("DriverServlet");
         } else {
             request.setAttribute("errorMessage", "Failed to update driver details.");
-            if ("admin".equals(role)) {
-                request.getRequestDispatcher("EditDriver.jsp").forward(request, response);
-            } else if ("driver".equals(role)) {
-                request.getRequestDispatcher("driverEditProfile.jsp").forward(request, response);
-            }
+            request.getRequestDispatcher("EditDriver.jsp").forward(request, response);
         }
     }
+    
+    
 }

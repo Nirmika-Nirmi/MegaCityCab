@@ -217,12 +217,20 @@
         <h1>Assigned Rides</h1>
     </header>
 
-    <!-- Navigation Bar -->
+     <!-- Navigation Bar -->
     <nav>
+        <%
+            // Retrieve driver ID from session
+            Integer driverId = (Integer) session.getAttribute("driverId");
+            if (driverId == null) {
+                response.sendRedirect("driverLogin.jsp"); // Redirect to login if session is invalid
+                return;
+            }
+        %>
         <a href="driver-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
         <a href="driver-bookings.jsp"><i class="fas fa-calendar-alt"></i> View All Rides</a>
         <a href="DriverEarningsHistory.jsp"><i class="fas fa-dollar-sign"></i> Earnings History</a>
-        <a href="driverEditProfile.jsp"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <a href="driverEditProfile.jsp?driverId=<%= driverId %>"><i class="fas fa-user-edit"></i> Edit Profile</a>
         <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
@@ -235,13 +243,7 @@
             </div>
             <div class="card-body">
                 <%
-                    // Retrieve driver ID from session
-                    Integer driverId = (Integer) session.getAttribute("driverId");
-                    if (driverId == null) {
-                        out.println("<p>Driver ID not found in session. Please <a href='driverLogin.jsp'>log in again</a>.</p>");
-                        return;
-                    }
-
+                
                     // Fetch assigned rides for the driver
                     BookingDAO bookingDAO = new BookingDAO();
                     List<Booking> assignedRides = bookingDAO.getAssignedRides(driverId);

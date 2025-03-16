@@ -88,7 +88,6 @@
         }
 
         .table th {
-            
             color: black;
             font-weight: 500;
         }
@@ -183,18 +182,24 @@
 
     <!-- Navigation Bar -->
     <nav>
+        <%
+            // Retrieve driver ID from session
+            Integer driverId = (Integer) session.getAttribute("driverId");
+            if (driverId == null) {
+                response.sendRedirect("driverLogin.jsp"); // Redirect to login if session is invalid
+                return;
+            }
+        %>
         <a href="driver-dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a>
         <a href="driver-bookings.jsp"><i class="fas fa-calendar-alt"></i> View All Rides</a>
         <a href="DriverEarningsHistory.jsp"><i class="fas fa-dollar-sign"></i> Earnings History</a>
-        <a href="driverEditProfile.jsp"><i class="fas fa-user-edit"></i> Edit Profile</a>
+        <a href="driverEditProfile.jsp?driverId=<%= driverId %>"><i class="fas fa-user-edit"></i> Edit Profile</a>
         <a href="#" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </nav>
 
     <!-- Main Content -->
     <div class="container">
         <%
-            // Retrieve driver ID from session
-            Integer driverId = (Integer) session.getAttribute("driverId");
             if (driverId == null) {
         %>
                 <div class="alert alert-danger">

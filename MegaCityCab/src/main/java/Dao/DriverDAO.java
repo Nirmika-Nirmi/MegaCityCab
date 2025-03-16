@@ -211,6 +211,25 @@ public class DriverDAO {
     }
     
     
+    public static boolean modifyDriverDetails(Driver driver) {
+    	try (Connection conn = DBConnection.getConnection();
+    			 PreparedStatement pstmt = conn.prepareStatement("UPDATE drivers SET full_name = ?, email = ?, phone = ?, address = ?, license_number = ?, password = ? WHERE driver_id = ?")){
+            
+            pstmt.setString(1, driver.getFullName());
+            pstmt.setString(2, driver.getEmail());
+            pstmt.setString(3, driver.getPhoneNumber());
+            pstmt.setString(4, driver.getAddress());
+            pstmt.setString(5, driver.getLicenseNumber());
+            pstmt.setString(6, driver.getPassword());
+            pstmt.setInt(7, driver.getDriverId());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
 
     public static boolean deleteDriver(int driverId) {
         try (Connection conn = DBConnection.getConnection();
